@@ -4,12 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>E-mix Online Store | Premium Tech & Software</title>
-    <!-- Modern Font: Poppins -->
+    
+    <!-- ======================================================================= -->
+    <!-- 🔴🔴🔴 දත්ත වෙනස් කරන ස්ථානය 🔴🔴🔴 -->
+    <!-- ======================================================================= -->
+    <script>
+        // 📞 1. ඔබේ දුරකථන අංක සහ සමාජ මාධ්‍ය ලින්ක්
+        const contactInfo = {
+            phone: "0715205901",
+            whatsapp: "94782482855",
+            facebook: "https://web.facebook.com/people/E-Mix/61553416852131/?rdid=EqNHQuLBRIuuqYXV"
+        };
+
+        // 📊 2. ඔබගේ Google Sheet CSV Link එක මෙතැනට Paste කරන්න 👇
+        const googleSheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSCChyKpmHDsyJ1ySiSktqo0KGrSTZygfRjC8SjdyJQivg1St6dt6_hPb0Bj4INQTktwbL5dtFlleMz/pub?gid=0&single=true&output=csv"; 
+        
+        // උදාහරණයක්: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ.../pub?output=csv"
+    </script>
+    <!-- ======================================================================= -->
+
+    <!-- Fonts & CSV Parser -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <!-- PapaParse Library (Google Sheet කියවීමට) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
     
     <style>
+        /* (පෙර තිබූ මෝස්තර එලෙසම ඇත) */
         :root {
-            --primary: #d4af37; /* Premium Gold */
+            --primary: #d4af37; 
             --primary-glow: rgba(212, 175, 55, 0.4);
             --bg-dark: #0a0f16;
             --card-bg: rgba(20, 25, 32, 0.6);
@@ -21,223 +43,78 @@
             font-family: 'Poppins', sans-serif; 
             background-color: var(--bg-dark); 
             color: var(--text-light); 
-            margin: 0; 
-            padding: 0;
-            background-image: 
-                radial-gradient(circle at 15% 50%, rgba(212, 175, 55, 0.05), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(0, 150, 255, 0.05), transparent 25%);
-            background-attachment: fixed;
+            margin: 0; padding: 0;
             overflow-x: hidden;
         }
         
-        /* Glassmorphism Navigation Bar */
         nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
+            position: fixed; top: 0; width: 100%;
             background: rgba(10, 15, 22, 0.8);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 1000;
-            display: flex;
-            justify-content: center;
-            padding: 15px 0;
-            gap: 10px;
+            z-index: 1000; display: flex; justify-content: center;
+            padding: 15px 0; gap: 10px;
         }
 
         .lang-btn { 
-            background: transparent; 
-            border: 1px solid var(--primary); 
-            color: var(--text-light); 
-            padding: 6px 20px; 
-            border-radius: 30px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            font-size: 0.9em;
+            background: transparent; border: 1px solid var(--primary); 
+            color: var(--text-light); padding: 6px 20px; 
+            border-radius: 30px; cursor: pointer; font-weight: 600; 
             transition: all 0.3s ease; 
         }
-        
-        .lang-btn:hover, .lang-btn.active { 
-            background: var(--primary); 
-            color: #000; 
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
+        .lang-btn:hover, .lang-btn.active { background: var(--primary); color: #000; }
 
-        /* Hero Section */
-        header { 
-            text-align: center; 
-            padding: 120px 20px 60px 20px; 
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .logo { 
-            width: 160px; 
-            border-radius: 20px; 
-            box-shadow: 0 10px 30px var(--primary-glow);
-            transition: transform 0.5s;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        h1 { 
-            font-size: 3.5em; 
-            margin: 20px 0 5px 0; 
-            font-weight: 800;
-            background: linear-gradient(90deg, #fff, var(--primary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
-        }
-        
-        p.tagline { 
-            color: var(--text-muted); 
-            font-size: 1.2em; 
-            font-weight: 300;
-            margin-top: 0; 
-            letter-spacing: 2px;
-        }
+        header { text-align: center; padding: 120px 20px 60px 20px; }
+        .logo { width: 160px; border-radius: 20px; box-shadow: 0 10px 30px var(--primary-glow); }
+        h1 { font-size: 3.5em; margin: 20px 0 5px 0; font-weight: 800; color: #fff;}
+        p.tagline { color: var(--text-muted); font-size: 1.2em; letter-spacing: 2px; }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        
-        h2.section-title { 
-            text-align: center; 
-            color: #fff; 
-            font-size: 2.2em; 
-            margin-bottom: 50px; 
-            font-weight: 600;
-        }
-        
-        h2.section-title span {
-            color: var(--primary);
-        }
+        h2.section-title { text-align: center; color: #fff; font-size: 2em; margin: 50px 0 30px 0; }
+        h2.section-title span { color: var(--primary); }
 
-        /* Modern Grid & Glass Cards */
-        .items-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-            gap: 30px; 
-        }
+        .items-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
         
         .item-card { 
-            background: var(--card-bg); 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 20px; 
-            overflow: hidden; 
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); 
+            border-radius: 20px; overflow: hidden; 
+            transition: all 0.4s ease; 
         }
+        .item-card:hover { transform: translateY(-10px); border-color: var(--primary); }
         
-        .item-card:hover { 
-            transform: translateY(-10px); 
-            border-color: var(--primary);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 15px var(--primary-glow); 
-        }
+        .item-img-container { width: 100%; height: 220px; background-color: #05080c; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .item-img-container img { width: 100%; height: 100%; object-fit: cover; }
         
-        .item-img-container { 
-            width: 100%; 
-            height: 220px; 
-            background-color: #05080c; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            overflow: hidden; 
-            position: relative;
-        }
-        
-        .item-img-container img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: cover; 
-            transition: transform 0.5s;
-        }
-
-        .item-card:hover .item-img-container img {
-            transform: scale(1.1);
-        }
-
-        .no-img { color: var(--text-muted); font-size: 0.9em; font-weight: 300; }
-
         .item-details { padding: 25px; }
-        .item-title { color: #fff; font-size: 1.4em; margin: 0 0 10px 0; font-weight: 600; }
+        .item-title { color: #fff; font-size: 1.4em; margin: 0 0 10px 0; }
         .item-price { color: var(--primary); font-weight: 800; font-size: 1.3em; margin-bottom: 12px; }
-        .item-desc { font-size: 0.95em; color: var(--text-muted); line-height: 1.6; font-weight: 300; }
+        .item-desc { font-size: 0.95em; color: var(--text-muted); line-height: 1.6; }
 
-        /* Professional Contact Section */
         .contact-section { 
             background: linear-gradient(145deg, rgba(20, 25, 32, 0.8), rgba(10, 15, 22, 0.9));
-            padding: 60px 40px; 
-            margin-top: 80px; 
-            border-radius: 24px; 
-            text-align: center; 
+            padding: 60px 40px; margin-top: 80px; border-radius: 24px; text-align: center; 
             border: 1px solid rgba(255, 255, 255, 0.05); 
-            position: relative;
-            overflow: hidden;
         }
         
-        .contact-section::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-        }
-
-        .contact-section p { font-size: 1.2em; color: var(--text-muted); margin-bottom: 30px;}
+        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top:20px;}
+        .btn { padding: 15px 30px; color: white; text-decoration: none; border-radius: 50px; font-weight: 600; }
+        .btn-call { background: var(--primary); color: #000; }
+        .btn-wa { background: #25D366; }
+        .btn-fb { background: #1877F2; }
         
-        .btn-group { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; }
-        
-        .btn { 
-            padding: 15px 30px; 
-            color: white; 
-            text-decoration: none; 
-            border-radius: 50px; 
-            font-weight: 600; 
-            font-size: 1.1em; 
-            transition: all 0.3s ease; 
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .btn:hover { transform: translateY(-3px); filter: brightness(1.1); }
-        .btn-call { background: var(--primary); color: #000; box-shadow: 0 5px 15px var(--primary-glow); }
-        .btn-wa { background: #25D366; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3); }
-        .btn-fb { background: #1877F2; box-shadow: 0 5px 15px rgba(24, 119, 242, 0.3); }
-        
-        footer { 
-            text-align: center; 
-            padding: 30px 20px; 
-            color: var(--text-muted); 
-            font-size: 0.9em; 
-            margin-top: 60px;
-            background: rgba(0,0,0,0.3);
-        }
-
-        /* Mobile Responsiveness */
-        @media (max-width: 768px) {
-            h1 { font-size: 2.5em; }
-            .btn-group { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
-            .btn { width: 100%; justify-content: center; box-sizing: border-box; }
-        }
+        footer { text-align: center; padding: 30px; color: var(--text-muted); margin-top: 60px; }
+        .loading-text { text-align: center; color: var(--primary); font-size: 1.2em; padding: 50px; }
     </style>
 </head>
 <body>
 
-    <!-- Language Selector -->
     <nav>
         <button class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
         <button class="lang-btn" onclick="setLanguage('en')">English</button>
         <button class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
     </nav>
 
-    <!-- Hero Section -->
     <header>
-        <!-- නව Logo එක මෙහි ඇතුළත් කර ඇත -->
         <img src="pic001.png" alt="E-Mix Logo" class="logo">
         <h1>E-Mix Store</h1>
         <p class="tagline" id="txt-tagline">"New Technology Near You, Experience It.."</p>
@@ -245,150 +122,141 @@
 
     <div class="container">
         
-        <!-- Products & Services -->
-        <h2 class="section-title" id="txt-items-title">අපගේ <span>සේවාවන්</span></h2>
-        
-        <!-- Cards Container -->
-        <div class="items-grid" id="items-container">
-            <!-- JavaScript මගින් භාණ්ඩ මෙහි පෙන්වනු ඇත -->
+        <!-- Products Section -->
+        <div id="products-section" style="display:none;">
+            <h2 class="section-title" id="txt-products-title">අපගේ <span>භාණ්ඩ</span></h2>
+            <div class="items-grid" id="products-container"></div>
         </div>
 
-        <!-- Contact Us -->
+        <!-- Services Section -->
+        <div id="services-section" style="display:none;">
+            <h2 class="section-title" id="txt-services-title">අපගේ <span>සේවාවන්</span></h2>
+            <div class="items-grid" id="services-container"></div>
+        </div>
+
+        <div id="loading" class="loading-text">දත්ත පූරණය වෙමින් පවතී... (Loading Data...)</div>
+
+        <!-- Contact Section -->
         <div class="contact-section">
-            <h2 class="section-title" id="txt-contact-title" style="margin-bottom: 10px;">අපව <span>සම්බන්ධ කරගන්න</span></h2>
+            <h2 class="section-title" id="txt-contact-title">අපව <span>සම්බන්ධ කරගන්න</span></h2>
             <p id="txt-address">📍 අනුරාධපුරය, ශ්‍රී ලංකාව</p>
             
             <div class="btn-group">
-                <a href="tel:0715205901" class="btn btn-call">📞 071 520 5901</a>
-                <a href="https://wa.me/94782482855" class="btn btn-wa" id="txt-wa">💬 WhatsApp Message</a>
-                <a href="https://web.facebook.com/people/E-Mix/61553416852131/?rdid=EqNHQuLBRIuuqYXV" class="btn btn-fb" target="_blank" id="txt-fb">📘 Facebook Page</a>
+                <a href="#" class="btn btn-call" id="btn-call">📞 Call Us</a>
+                <a href="#" class="btn btn-wa" id="txt-wa">💬 WhatsApp Message</a>
+                <a href="#" class="btn btn-fb" target="_blank" id="txt-fb">📘 Facebook Page</a>
             </div>
         </div>
     </div>
 
-    <footer>
-        &copy; 2026 E-Mix Online Store, Anuradhapura. Premium Tech Solutions.
-    </footer>
+    <footer>&copy; 2026 E-Mix Online Store. All Rights Reserved.</footer>
 
-    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // භාෂා පරිවර්තන දත්ත
-        const translations = {
-            si: {
-                tagline: "ඔබ අසල ඇති නවීන තාක්ෂණය, එය අත්විඳින්න..",
-                itemsTitle: "අපගේ <span>භාණ්ඩ සහ සේවාවන්</span>",
-                contactTitle: "අපව <span>සම්බන්ධ කරගන්න</span>",
-                address: "📍 අනුරාධපුරය, ශ්‍රී ලංකාව",
-                waBtn: "💬 WhatsApp පණිවිඩයක්",
-                fbBtn: "📘 Facebook පිටුව"
-            },
-            en: {
-                tagline: "New Technology Near You, Experience It..",
-                itemsTitle: "Our <span>Products & Services</span>",
-                contactTitle: "<span>Contact</span> Us",
-                address: "📍 Anuradhapura, Sri Lanka",
-                waBtn: "💬 WhatsApp Message",
-                fbBtn: "📘 Facebook Page"
-            },
-            ta: {
-                tagline: "உங்களுக்கு அருகிலுள்ள புதிய தொழில்நுட்பம்..",
-                itemsTitle: "எங்கள் <span>தயாரிப்புகள் & சேவைகள்</span>",
-                contactTitle: "எங்களை <span>தொடர்பு கொள்ள</span>",
-                address: "📍 அனுராதபுரம், இலங்கை",
-                waBtn: "💬 WhatsApp செய்தி",
-                fbBtn: "📘 Facebook பக்கம்"
-            }
-        };
-
-        // ========================================================================
-        // භාණ්ඩ සහ සේවා එකතු කරන ස්ථානය (ADD YOUR PRODUCTS/SERVICES HERE)
-        // ========================================================================
-        const myItems = [
-            {
-                image: "", // උදාහරණ: "laptop.jpg"
-                name_si: "නවීන තාක්ෂණික භාණ්ඩ",
-                name_en: "Modern Tech Gadgets",
-                name_ta: "நவீன தொழில்நுட்ப சாதனங்கள்",
-                price: "Best Prices",
-                desc_si: "ඔබට අවශ්‍ය නවතම තාක්ෂණික උපාංග, පරිගණක සහ ඉලෙක්ට්‍රොනික උපාංග විශ්වාසවන්තව ලබාගන්න.",
-                desc_en: "Get the latest tech gadgets, computers, and electronic accessories with trust and warranty.",
-                desc_ta: "நம்பகத்தன்மை மற்றும் உத்தரவாதத்துடன் சமீபத்திய தொழில்நுட்ப சாதனங்களை பெறுங்கள்."
-            },
-            {
-                image: "", // උදාහරණ: "software.png"
-                name_si: "මෘදුකාංග සංවර්ධනය",
-                name_en: "Software Development",
-                name_ta: "மென்பொருள் மேம்பாடு",
-                price: "Custom Solutions",
-                desc_si: "ඔබගේ ව්‍යාපාරයට සරිලන පරිදි ඉහළ ප්‍රමිතියකින් යුත් මෘදුකාංග සහ පද්ධති සකසා දීම.",
-                desc_en: "High-quality custom software and system solutions tailored for your business needs.",
-                desc_ta: "உங்கள் வணிகத் தேவைகளுக்காக வடிவமைக்கப்பட்ட உயர்தர தனிப்பயன் மென்பொருள் தீர்வுகள்."
-            }
-            // නව භාණ්ඩයක් අවශ්‍ය නම් මීට පහළින් ඇතුලත් කරන්න.
-        ];
-        // ========================================================================
-
         let currentLang = 'si';
+        let allItems = []; // Google sheet එකෙන් එන දත්ත මෙහි ගබඩා වේ
+
+        const translations = {
+            si: { tagline: "ඔබ අසල ඇති නවීන තාක්ෂණය, එය අත්විඳින්න..", prodTitle: "අපගේ <span>භාණ්ඩ</span>", servTitle: "අපගේ <span>සේවාවන්</span>", contactTitle: "අපව <span>සම්බන්ධ කරගන්න</span>", address: "📍 අනුරාධපුරය, ශ්‍රී ලංකාව", waBtn: "💬 WhatsApp", fbBtn: "📘 Facebook" },
+            en: { tagline: "New Technology Near You, Experience It..", prodTitle: "Our <span>Products</span>", servTitle: "Our <span>Services</span>", contactTitle: "<span>Contact</span> Us", address: "📍 Anuradhapura, Sri Lanka", waBtn: "💬 WhatsApp", fbBtn: "📘 Facebook" },
+            ta: { tagline: "உங்களுக்கு அருகிலுள்ள புதிய தொழில்நுட்பம்..", prodTitle: "எங்கள் <span>தயாரிப்புகள்</span>", servTitle: "எங்கள் <span>சேவைகள்</span>", contactTitle: "எங்களை <span>தொடர்பு கொள்ள</span>", address: "📍 அனுராதபுரம், இலங்கை", waBtn: "💬 WhatsApp", fbBtn: "📘 Facebook" }
+        };
 
         function setLanguage(lang) {
             currentLang = lang;
-            
-            // බොත්තම් Animation
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.getAttribute('onclick').includes(`'${lang}'`)) btn.classList.add('active');
+            });
 
-            // Text Update
             document.getElementById('txt-tagline').innerText = translations[lang].tagline;
-            document.getElementById('txt-items-title').innerHTML = translations[lang].itemsTitle;
+            document.getElementById('txt-products-title').innerHTML = translations[lang].prodTitle;
+            document.getElementById('txt-services-title').innerHTML = translations[lang].servTitle;
             document.getElementById('txt-contact-title').innerHTML = translations[lang].contactTitle;
             document.getElementById('txt-address').innerText = translations[lang].address;
             document.getElementById('txt-wa').innerText = translations[lang].waBtn;
             document.getElementById('txt-fb').innerText = translations[lang].fbBtn;
 
-            renderItems();
+            renderItems(); // භාෂාව වෙනස් කළ විට භාණ්ඩ ද අලුත් වේ
         }
 
-        function renderItems() {
-            const container = document.getElementById('items-container');
-            container.innerHTML = ""; 
+        function fetchGoogleSheetData() {
+            if(!googleSheetCSV || googleSheetCSV.includes("මෙහි_ඔබගේ")) {
+                document.getElementById('loading').innerHTML = "⚠️ කරුණාකර Google Sheet CSV Link එක කේතයට ඇතුලත් කරන්න.";
+                return;
+            }
 
-            myItems.forEach((item, index) => {
-                let itemName = currentLang === 'si' ? item.name_si : (currentLang === 'en' ? item.name_en : item.name_ta);
-                let itemDesc = currentLang === 'si' ? item.desc_si : (currentLang === 'en' ? item.desc_en : item.desc_ta);
-                
-                let imageHTML = item.image 
-                    ? `<img src="${item.image}" alt="${itemName}">` 
-                    : `<span class="no-img">E-Mix Store</span>`;
-
-                // Add a slight delay animation for each card
-                let delay = index * 0.1;
-
-                let cardHTML = `
-                    <div class="item-card" style="animation: fadeIn 0.5s ease ${delay}s both;">
-                        <div class="item-img-container">
-                            ${imageHTML}
-                        </div>
-                        <div class="item-details">
-                            <h3 class="item-title">${itemName}</h3>
-                            <div class="item-price">${item.price}</div>
-                            <p class="item-desc">${itemDesc}</p>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += cardHTML;
+            Papa.parse(googleSheetCSV, {
+                download: true,
+                header: true,
+                complete: function(results) {
+                    allItems = results.data;
+                    document.getElementById('loading').style.display = 'none';
+                    renderItems();
+                },
+                error: function(err) {
+                    document.getElementById('loading').innerHTML = "⚠️ දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය. Link එක නිවැරදිදැයි පරීක්ෂා කරන්න.";
+                }
             });
         }
 
+        function renderItems() {
+            const prodContainer = document.getElementById('products-container');
+            const servContainer = document.getElementById('services-container');
+            const prodSection = document.getElementById('products-section');
+            const servSection = document.getElementById('services-section');
+            
+            prodContainer.innerHTML = ""; servContainer.innerHTML = "";
+            let hasProducts = false; let hasServices = false;
+
+            allItems.forEach(item => {
+                if(!item.Type || !item.Name_SI) return; // හිස් පේළි ඉවත් කිරීම
+
+                let itemName = currentLang === 'si' ? item.Name_SI : (currentLang === 'en' ? item.Name_EN : item.Name_TA);
+                let itemDesc = currentLang === 'si' ? item.Desc_SI : (currentLang === 'en' ? item.Desc_EN : item.Desc_TA);
+                
+                // Name එක හෝ Description එක අදාළ භාෂාවෙන් නැත්නම් ඉංග්‍රීසි එක පෙන්වන්න
+                if(!itemName) itemName = item.Name_EN;
+                if(!itemDesc) itemDesc = item.Desc_EN;
+
+                let imageHTML = item.Image ? `<img src="${item.Image}" alt="${itemName}">` : `<span style="color:#666">No Image</span>`;
+
+                let cardHTML = `
+                    <div class="item-card">
+                        <div class="item-img-container">${imageHTML}</div>
+                        <div class="item-details">
+                            <h3 class="item-title">${itemName}</h3>
+                            <div class="item-price">${item.Price || ''}</div>
+                            <p class="item-desc">${itemDesc || ''}</p>
+                        </div>
+                    </div>
+                `;
+
+                if(item.Type.trim().toLowerCase() === 'product' || item.Type.trim() === 'භාණ්ඩ') {
+                    prodContainer.innerHTML += cardHTML;
+                    hasProducts = true;
+                } else if(item.Type.trim().toLowerCase() === 'service' || item.Type.trim() === 'සේවා') {
+                    servContainer.innerHTML += cardHTML;
+                    hasServices = true;
+                }
+            });
+
+            // භාණ්ඩ හෝ සේවා තිබේ නම් පමණක් එම කොටස (Section) පෙන්වීම
+            prodSection.style.display = hasProducts ? 'block' : 'none';
+            servSection.style.display = hasServices ? 'block' : 'none';
+        }
+
+        function setContactDetails() {
+            document.getElementById('btn-call').href = `tel:${contactInfo.phone}`;
+            document.getElementById('btn-call').innerHTML = `📞 ${contactInfo.phone}`;
+            document.getElementById('txt-wa').href = `https://wa.me/${contactInfo.whatsapp}`;
+            document.getElementById('txt-fb').href = contactInfo.facebook;
+        }
+
         window.onload = () => {
-            renderItems();
+            setContactDetails();
+            setLanguage('si'); 
+            fetchGoogleSheetData(); // දත්ත ලබා ගැනීම ආරම්භ කිරීම
         };
     </script>
-    
-    <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
 </body>
 </html>
