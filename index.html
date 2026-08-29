@@ -1,340 +1,2104 @@
 <!DOCTYPE html>
-<html lang="si">
+<html lang="si" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-mix Online Store | Premium Tech & Software</title>
-    
-    <!-- ======================================================================= -->
-    <!-- 🔴🔴🔴 දත්ත වෙනස් කරන ස්ථානය 🔴🔴🔴 -->
-    <!-- ======================================================================= -->
-    <script>
-        // 📞 1. ඔබේ දුරකථන අංක සහ සමාජ මාධ්‍ය ලින්ක්
-        const contactInfo = {
-            phone: "0715205901",
-            whatsapp: "94782482855",
-            facebook: "https://web.facebook.com/people/E-Mix/61553416852131/?rdid=EqNHQuLBRIuuqYXV"
-        };
-
-        // 📊 2. ඔබගේ Google Sheet CSV Link එක මෙතැනට Paste කරන්න 👇
-        const googleSheetCSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSCChyKpmHDsyJ1ySiSktqo0KGrSTZygfRjC8SjdyJQivg1St6dt6_hPb0Bj4INQTktwbL5dtFlleMz/pub?gid=0&single=true&output=csv"; 
-    </script>
-    <!-- ======================================================================= -->
-
-    <!-- Fonts & CSV Parser -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
-    
+    <title>E-Mix | Anuradhapura, Sri Lanka</title>
+    <meta name="description" content="E-Mix - භාණ්ඩ හා සේවා | Products & Services | Anuradhapura, Sri Lanka">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Sinhala:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #d4af37; /* Gold Color */
-            --primary-glow: rgba(212, 175, 55, 0.4);
-            --bg-dark: #0a0f16;
-            --card-bg: rgba(20, 25, 32, 0.8);
-            --text-light: #f1f5f9;
-            --text-muted: #94a3b8;
+            --primary: #1a1a2e;
+            --primary-dark: #0f0f1a;
+            --accent: #e94560;
+            --accent-hover: #c73a52;
+            --gold: #ffd700;
+            --gold-dark: #c5a600;
+            --bg: #f8f9fa;
+            --bg-card: #ffffff;
+            --bg-dark: #1a1a2e;
+            --text: #1a1a2e;
+            --text-light: #4a4a5a;
+            --text-white: #ffffff;
+            --border: #e0e0e0;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.12);
+            --radius: 16px;
+            --radius-sm: 10px;
+            --radius-xs: 6px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-sinhala: 'Noto Sans Sinhala', 'Inter', sans-serif;
+            --font-tamil: 'Noto Sans Tamil', 'Inter', sans-serif;
+            --font-english: 'Inter', sans-serif;
+            --max-width: 1200px;
+            --nav-height: 70px;
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
 
-        body { 
-            font-family: 'Poppins', sans-serif; 
-            background-color: var(--bg-dark); 
-            color: var(--text-light); 
-            margin: 0; padding: 0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-sinhala);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
             overflow-x: hidden;
-        }
-        
-        /* Navigation */
-        nav {
-            position: fixed; top: 0; width: 100%;
-            background: rgba(10, 15, 22, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            z-index: 1000; display: flex; justify-content: center;
-            padding: 15px 0; gap: 10px;
+            padding-bottom: calc(80px + var(--safe-bottom));
+            transition: background var(--transition), color var(--transition);
         }
 
-        .lang-btn { 
-            background: transparent; border: 1px solid var(--primary); 
-            color: var(--text-light); padding: 6px 20px; 
-            border-radius: 30px; cursor: pointer; font-weight: 600; 
-            transition: all 0.3s ease; 
+        body[dir="ltr"] {
+            font-family: var(--font-english);
         }
-        .lang-btn:hover, .lang-btn.active { background: var(--primary); color: #000; }
+        body[dir="ltr"][data-lang="ta"] {
+            font-family: var(--font-tamil);
+        }
 
-        /* Header */
-        header { text-align: center; padding: 100px 20px 40px 20px; }
-        .logo { width: 140px; border-radius: 20px; box-shadow: 0 10px 30px var(--primary-glow); margin-bottom: 15px; }
-        h1 { font-size: 3em; margin: 0 0 5px 0; font-weight: 800; color: #fff;}
-        p.tagline { color: var(--text-muted); font-size: 1.1em; letter-spacing: 1px; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        h2.section-title { text-align: center; color: #fff; font-size: 2em; margin: 20px 0 40px 0; }
-        h2.section-title span { color: var(--primary); }
+        /* ===== PRELOADER ===== */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        #preloader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .loader-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
 
-        /* Home View - Categories */
-        .category-container { display: flex; justify-content: center; gap: 30px; padding: 20px; flex-wrap: wrap; }
-        .category-card {
-            background: var(--card-bg); padding: 40px; border-radius: 20px; text-align: center; cursor: pointer;
-            width: 250px; border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.4s ease;
-            border-bottom: 4px solid var(--primary);
+        /* ===== HEADER / NAV ===== */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(26, 26, 46, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            transition: background var(--transition);
         }
-        .category-card:hover { transform: translateY(-10px); box-shadow: 0 15px 40px var(--primary-glow); border-color: var(--primary); }
-        .category-card h2 { margin: 15px 0 0 0; font-size: 28px; color: var(--primary); }
-        .category-card .icon { font-size: 50px; }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 18px;
+            color: #fff;
+            letter-spacing: -0.5px;
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
+        }
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+        .logo-text span {
+            color: var(--accent);
+        }
 
-        /* Data View - Grid (Daraz/AliExpress Style) */
-        #data-view { display: none; }
-        .back-btn { 
-            background: transparent; color: var(--primary); border: 1px solid var(--primary);
-            padding: 8px 20px; border-radius: 30px; cursor: pointer; margin-bottom: 20px; font-size: 16px; transition: 0.3s;
-            display: inline-flex; align-items: center; gap: 8px;
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
         }
-        .back-btn:hover { background: var(--primary); color: #000; }
-        
-        .items-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; 
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 20px;
+            transition: all var(--transition);
+            white-space: nowrap;
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
         }
-        
-        .item-card { 
-            background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.05); 
-            border-radius: 15px; overflow: hidden; position: relative;
-            transition: all 0.4s ease; display: flex; flex-direction: column;
+        .nav-link:hover,
+        .nav-link.active {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.12);
         }
-        .item-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
-        
-        .item-img-container { width: 100%; height: 220px; background-color: #05080c; }
-        .item-img-container img { width: 100%; height: 100%; object-fit: cover; }
-        
-        .item-details { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; }
-        .item-title { color: #fff; font-size: 1.2em; margin: 0 0 10px 0; line-height: 1.3; font-weight: 600; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .item-price { color: var(--primary); font-weight: 800; font-size: 1.4em; margin-bottom: 10px; }
-        .item-desc { font-size: 0.9em; color: var(--text-muted); line-height: 1.5; margin-bottom: 20px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-        
-        .buy-btn { 
-            text-align: center; background: var(--primary); color: #000; padding: 10px; 
-            text-decoration: none; border-radius: 8px; font-weight: 600; transition: 0.3s; width: 100%; box-sizing: border-box; display: block;
+        .nav-link.active {
+            background: var(--accent);
+            color: #fff;
         }
-        .buy-btn:hover { background: #fff; box-shadow: 0 0 15px var(--primary-glow); }
 
-        /* Contact Section */
-        .contact-section { 
-            background: linear-gradient(145deg, rgba(20, 25, 32, 0.8), rgba(10, 15, 22, 0.9));
-            padding: 50px 30px; margin-top: 60px; border-radius: 24px; text-align: center; 
-            border: 1px solid rgba(255, 255, 255, 0.05); 
+        .lang-switcher {
+            display: flex;
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 3px;
+            flex-shrink: 0;
         }
-        
-        .btn-group { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top:25px;}
-        .btn { padding: 12px 25px; color: white; text-decoration: none; border-radius: 50px; font-weight: 600; font-size: 0.95em; transition: 0.3s;}
-        .btn:hover { transform: scale(1.05); }
-        .btn-call { background: var(--primary); color: #000; }
-        .btn-wa { background: #25D366; }
-        .btn-fb { background: #1877F2; }
-        
-        footer { text-align: center; padding: 30px; color: var(--text-muted); font-size: 0.9em; }
-        .loading-text { text-align: center; color: var(--primary); font-size: 1.2em; padding: 50px; }
+        .lang-btn {
+            border: none;
+            background: none;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 700;
+            font-size: 11px;
+            padding: 6px 10px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.3px;
+        }
+        .lang-btn:hover {
+            color: #fff;
+        }
+        .lang-btn.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(233, 69, 96, 0.35);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .hamburger span {
+            width: 22px;
+            height: 2.5px;
+            background: #fff;
+            border-radius: 2px;
+            transition: all var(--transition);
+        }
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(6.5px) rotate(45deg);
+        }
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-6.5px) rotate(-45deg);
+        }
+
+        /* ===== MOBILE BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            background: rgba(26, 26, 46, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 8px 4px calc(8px + var(--safe-bottom));
+            display: none;
+        }
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 10px;
+            font-weight: 600;
+            transition: color var(--transition);
+            cursor: pointer;
+            border: none;
+            background: none;
+            font-family: inherit;
+            padding: 4px 8px;
+            border-radius: 8px;
+        }
+        .bottom-nav-item svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+            transition: transform var(--transition);
+        }
+        .bottom-nav-item.active {
+            color: var(--accent);
+        }
+        .bottom-nav-item.active svg {
+            transform: scale(1.1);
+        }
+        .bottom-nav-item:hover {
+            color: #fff;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding-top: var(--nav-height);
+            min-height: calc(100vh - var(--nav-height));
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        /* ===== PAGE SECTIONS ===== */
+        .page-section {
+            display: none;
+            padding: 20px 0 40px;
+            animation: fadeInUp 0.4s ease;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+        .section-subtitle {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d2d5e 50%, var(--primary-dark) 100%);
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            color: #fff;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -30%;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(233, 69, 96, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -40%;
+            left: -20%;
+            width: 250px;
+            height: 250px;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.12);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+        .hero h1 {
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight: 900;
+            line-height: 1.15;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+        .hero h1 .highlight {
+            color: var(--accent);
+        }
+        .hero p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.75);
+            max-width: 500px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        .hero-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 22px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(233, 69, 96, 0.4);
+        }
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(233, 69, 96, 0.5);
+        }
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        .btn-outline:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 12px;
+            border-radius: 24px;
+        }
+        .btn-xs {
+            padding: 6px 12px;
+            font-size: 11px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        /* ===== CONTACT STRIP ===== */
+        .contact-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .contact-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-card);
+            padding: 10px 16px;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+            text-decoration: none;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 600;
+            transition: all var(--transition);
+            border: 1px solid var(--border);
+        }
+        .contact-chip:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .contact-chip svg {
+            width: 18px;
+            height: 18px;
+            fill: var(--accent);
+            flex-shrink: 0;
+        }
+        .contact-chip .chip-label {
+            font-weight: 500;
+            color: var(--text-light);
+            font-size: 11px;
+        }
+        .contact-chip .chip-value {
+            font-weight: 700;
+        }
+
+        /* ===== CARDS GRID ===== */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-top: 12px;
+        }
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            transition: all var(--transition);
+            border: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+        .card-media {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4/3;
+            overflow: hidden;
+            background: #f0f0f5;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
+        .card-media img,
+        .card-media video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        .card:hover .card-media img,
+        .card:hover .card-media video {
+            transform: scale(1.05);
+        }
+        .card-media .placeholder-img {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: #bbb;
+            background: linear-gradient(135deg, #e8e8ef, #d8d8e5);
+        }
+        .card-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--accent);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .card-badge.daraz {
+            background: #f57224;
+        }
+        .card-badge.service {
+            background: #4a6cf7;
+        }
+        .card-body {
+            padding: 14px 16px 16px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.3;
+            color: var(--text);
+            cursor: pointer;
+        }
+        .card-title:hover {
+            color: var(--accent);
+        }
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+            flex: 1;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .card-price {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--accent);
+            letter-spacing: -0.5px;
+        }
+        .card-price .currency {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+        .card-actions {
+            display: flex;
+            gap: 6px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+        .card-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 8px 10px;
+            font-size: 11px;
+            border-radius: 20px;
+            min-width: 0;
+        }
+        .btn-buy {
+            background: var(--accent);
+            color: #fff;
+        }
+        .btn-buy:hover {
+            background: var(--accent-hover);
+        }
+        .btn-daraz {
+            background: #f57224;
+            color: #fff;
+        }
+        .btn-daraz:hover {
+            background: #e05e1a;
+        }
+        .btn-share {
+            background: #f0f0f5;
+            color: var(--text);
+        }
+        .btn-share:hover {
+            background: #e0e0e8;
+        }
+        .btn-link {
+            background: var(--primary);
+            color: #fff;
+        }
+        .btn-link:hover {
+            background: var(--primary-dark);
+        }
+        .btn-whatsapp {
+            background: #25d366;
+            color: #fff;
+        }
+        .btn-whatsapp:hover {
+            background: #1ebe5b;
+        }
+        .btn-facebook {
+            background: #1877f2;
+            color: #fff;
+        }
+        .btn-facebook:hover {
+            background: #0d6efd;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-light);
+        }
+        .empty-state .empty-icon {
+            font-size: 60px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+        .empty-state h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        /* ===== FILTER TABS ===== */
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+        .filter-tab {
+            padding: 8px 18px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all var(--transition);
+            font-family: inherit;
+            color: var(--text-light);
+            white-space: nowrap;
+        }
+        .filter-tab:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        .filter-tab.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(233, 69, 96, 0.3);
+        }
+
+        /* ===== ADMIN ===== */
+        .admin-login-form {
+            max-width: 400px;
+            margin: 40px auto;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 30px 24px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+        .admin-login-form h2 {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 4px;
+            text-align: center;
+        }
+        .admin-login-form .subtitle {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border);
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color var(--transition);
+            background: var(--bg);
+            color: var(--text);
+            outline: none;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+        }
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* Admin Dashboard */
+        .admin-dashboard {
+            display: none;
+            padding: 20px 0;
+        }
+        .admin-dashboard.active {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+        .admin-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .admin-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+        }
+        .admin-tabs {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+            background: var(--bg-card);
+            padding: 4px;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+        .admin-tab {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all var(--transition);
+            font-family: inherit;
+            color: var(--text-light);
+            flex: 1;
+            text-align: center;
+            white-space: nowrap;
+        }
+        .admin-tab:hover {
+            color: var(--accent);
+            background: rgba(233, 69, 96, 0.06);
+        }
+        .admin-tab.active {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 4px 10px rgba(233, 69, 96, 0.3);
+        }
+
+        .admin-panel {
+            display: none;
+        }
+        .admin-panel.active {
+            display: block;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        .admin-item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .admin-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg-card);
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+            flex-wrap: wrap;
+        }
+        .admin-item:hover {
+            border-color: var(--accent);
+        }
+        .admin-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            object-fit: cover;
+            flex-shrink: 0;
+            background: #f0f0f5;
+        }
+        .admin-item-info {
+            flex: 1;
+            min-width: 120px;
+        }
+        .admin-item-info .name {
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .admin-item-info .meta {
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .admin-item-actions {
+            display: flex;
+            gap: 6px;
+        }
+        .admin-item-actions .btn {
+            padding: 6px 10px;
+            font-size: 11px;
+            border-radius: 16px;
+        }
+
+        /* Settings panel */
+        .settings-form {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 16px;
+            z-index: 99999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 14px 20px;
+            border-radius: var(--radius-sm);
+            color: #fff;
+            font-weight: 600;
+            font-size: 13px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            max-width: 350px;
+        }
+        .toast.success {
+            background: #2ecc71;
+        }
+        .toast.error {
+            background: #e74c3c;
+        }
+        .toast.info {
+            background: #3498db;
+        }
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: var(--nav-height);
+                left: 0;
+                right: 0;
+                background: var(--primary);
+                flex-direction: column;
+                padding: 12px 16px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+                gap: 2px;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .nav-link {
+                width: 100%;
+                text-align: center;
+                padding: 12px;
+                font-size: 14px;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .bottom-nav {
+                display: flex;
+            }
+            .main-content {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 12px;
+            }
+            .hero {
+                padding: 24px 18px;
+                border-radius: 14px;
+            }
+            .section-title {
+                font-size: 20px;
+            }
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .admin-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .admin-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .admin-tab {
+                flex: none;
+                padding: 10px 14px;
+                font-size: 12px;
+            }
+            .lang-switcher {
+                margin-left: auto;
+            }
+            .logo-text {
+                font-size: 17px;
+            }
+            .logo-icon {
+                width: 34px;
+                height: 34px;
+                font-size: 15px;
+                border-radius: 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-actions .btn {
+                font-size: 10px;
+                padding: 7px 6px;
+            }
+            .hero h1 {
+                font-size: 26px;
+            }
+            .contact-strip {
+                gap: 8px;
+            }
+            .contact-chip {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+            .btn {
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .cards-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        /* Dark mode support for admin */
+        .admin-dashboard {
+            background: var(--bg);
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 24px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            animation: fadeInUp 0.3s ease;
+        }
+        .modal-content h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        .modal-close {
+            float: right;
+            background: none;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: var(--text-light);
+            transition: color var(--transition);
+            font-family: inherit;
+            line-height: 1;
+            padding: 4px;
+        }
+        .modal-close:hover {
+            color: var(--accent);
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 100px;
+            right: 20px;
+            z-index: 998;
+            background: #25d366;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            transition: transform var(--transition);
+            text-decoration: none;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+        .whatsapp-float svg {
+            width: 30px;
+            height: 30px;
+            fill: #fff;
+        }
+        @media (min-width: 769px) {
+            .whatsapp-float {
+                bottom: 30px;
+                right: 30px;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .site-header,
+            .bottom-nav,
+            .whatsapp-float,
+            .toast-container {
+                display: none !important;
+            }
+            .main-content {
+                padding-top: 0;
+            }
+            body {
+                padding-bottom: 0;
+            }
+        }
     </style>
 </head>
-<body>
+<body data-lang="si" dir="ltr">
 
-    <!-- Language Navigation -->
-    <nav>
-        <button class="lang-btn active" onclick="setLanguage('si')">සිංහල</button>
-        <button class="lang-btn" onclick="setLanguage('en')">English</button>
-        <button class="lang-btn" onclick="setLanguage('ta')">தமிழ்</button>
-    </nav>
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="loader-ring"></div>
+    </div>
 
-    <!-- Header / Logo -->
-    <header>
-        <img src="pic001.png" alt="E-Mix Logo" class="logo" onerror="this.style.display='none'">
-        <h1>E-Mix Store</h1>
-        <p class="tagline" id="txt-tagline">"New Technology Near You, Experience It.."</p>
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('home')" aria-label="E-Mix Home">
+                <div class="logo-icon">E</div>
+                <span class="logo-text">E-<span>Mix</span></span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <button class="nav-link active" data-page="home" onclick="navigateTo('home')">🏠 <span data-i18n="nav_home">මුල් පිටුව</span></button>
+                <button class="nav-link" data-page="products" onclick="navigateTo('products')">📦 <span data-i18n="nav_products">භාණ්ඩ</span></button>
+                <button class="nav-link" data-page="services" onclick="navigateTo('services')">🛠️ <span data-i18n="nav_services">සේවා</span></button>
+                <!-- Admin link removed from public nav for security -->
+            </nav>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="si" onclick="switchLanguage('si')">සිං</button>
+                <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                <button class="lang-btn" data-lang="ta" onclick="switchLanguage('ta')">த</button>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
     </header>
 
-    <div class="container">
-        <div id="loading" class="loading-text">දත්ත පූරණය වෙමින් පවතී... (Loading Data...)</div>
+    <!-- BOTTOM NAV (Mobile) -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav-item active" data-page="home" onclick="navigateTo('home')">
+            <svg viewBox="0 0 24 24"><path d="M12 3l9 9h-3v8h-5v-6h-2v6H6v-8H3l9-9z"/></svg>
+            <span data-i18n="nav_home">මුල් පිටුව</span>
+        </button>
+        <button class="bottom-nav-item" data-page="products" onclick="navigateTo('products')">
+            <svg viewBox="0 0 24 24"><path d="M20 7h-4V5a2 2 0 00-2-2H10a2 2 0 00-2 2v2H4a2 2 0 00-2 2v11a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zm-10-2h4v2h-4V5zm10 16H4V9h16v12z"/></svg>
+            <span data-i18n="nav_products">භාණ්ඩ</span>
+        </button>
+        <button class="bottom-nav-item" data-page="services" onclick="navigateTo('services')">
+            <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09A6.02 6.02 0 007.5 3 5.5 5.5 0 002 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.31C18.6 15.36 22 12.28 22 8.5A5.5 5.5 0 0016.5 3z"/></svg>
+            <span data-i18n="nav_services">සේවා</span>
+        </button>
+        <!-- Admin removed from bottom nav as well -->
+    </nav>
 
-        <!-- Home View (Categories) -->
-        <div id="home-view" style="display: none;">
-            <h2 class="section-title" id="txt-select-cat">ඔබට අවශ්‍ය අංශය <span>තෝරන්න</span></h2>
-            
-            <div class="category-container">
-                <div class="category-card" onclick="showCategory('Product')">
-                    <div class="icon">🛍️</div>
-                    <h2 id="txt-cat-products">භාණ්ඩ</h2>
-                </div>
-                <div class="category-card" onclick="showCategory('Service')">
-                    <div class="icon">🛠️</div>
-                    <h2 id="txt-cat-services">සේවා</h2>
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+
+        <!-- HOME PAGE -->
+        <section class="page-section active" id="page-home">
+            <div class="hero">
+                <div class="hero-content">
+                    <span class="hero-badge" data-i18n="hero_badge">ශ්‍රී ලංකාවේ විශ්වාසනීය වෙළඳසැල</span>
+                    <h1 data-i18n="hero_title">E-Mix <span class="highlight">භාණ්ඩ</span> හා <span class="highlight">සේවා</span></h1>
+                    <p data-i18n="hero_desc">අනුරාධපුරයේ සිට ලොවටම - ගුණාත්මක භාණ්ඩ හා සේවා එකම තැනකින්.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="navigateTo('products')">
+                            🛒 <span data-i18n="shop_now">දැන්ම මිලදී ගන්න</span>
+                        </button>
+                        <button class="btn btn-secondary" onclick="navigateTo('services')">
+                            🔧 <span data-i18n="our_services">අපගේ සේවා</span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Data View (Grid) -->
-        <div id="data-view">
-            <button class="back-btn" onclick="goBack()" id="btn-back">⬅ ආපසු (Back)</button>
-            <h2 class="section-title" id="view-title">අපගේ <span>භාණ්ඩ</span></h2>
-            
-            <div class="items-grid" id="items-container"></div>
-        </div>
-
-        <!-- Contact Section -->
-        <div class="contact-section">
-            <h2 class="section-title" id="txt-contact-title">අපව <span>සම්බන්ධ කරගන්න</span></h2>
-            <p id="txt-address">📍 අනුරාධපුරය, ශ්‍රී ලංකාව</p>
-            
-            <div class="btn-group">
-                <a href="#" class="btn btn-call" id="btn-call">📞 Call Us</a>
-                <a href="#" class="btn btn-wa" id="txt-wa">💬 WhatsApp</a>
-                <a href="#" class="btn btn-fb" target="_blank" id="txt-fb">📘 Facebook</a>
+            <div class="contact-strip">
+                <a href="tel:0715205901" class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <div><div class="chip-label" data-i18n="phone">දුරකථන</div><div class="chip-value">071 520 5901</div></div>
+                </a>
+                <a href="https://wa.me/94782482855" target="_blank" class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.41-1.49-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.22 5.11 4.51.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.84 9.84 0 01-1.51-5.25c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 016.99 2.9 9.82 9.82 0 012.9 6.99c0 5.45-4.44 9.88-9.89 9.88zm8.41-18.29A11.8 11.8 0 0012.05 0C5.5 0 .16 5.33.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.9 11.9 0 005.68 1.44h.01c6.55 0 11.88-5.33 11.88-11.89 0-3.18-1.24-6.16-3.48-8.4z"/></svg>
+                    <div><div class="chip-label">WhatsApp</div><div class="chip-value">+94 78 248 2855</div></div>
+                </a>
+                <a href="https://web.facebook.com/people/E-Mix/61553416852131/" target="_blank" class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    <div><div class="chip-label">Facebook</div><div class="chip-value">E-Mix</div></div>
+                </a>
+                <span class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                    <div><div class="chip-label" data-i18n="location">ස්ථානය</div><div class="chip-value">Anuradhapura, Sri Lanka</div></div>
+                </span>
             </div>
+
+            <h2 class="section-title" data-i18n="featured_products">🔥 විශේෂාංග භාණ්ඩ</h2>
+            <p class="section-subtitle" data-i18n="featured_products_sub">අපගේ ජනප්‍රියම භාණ්ඩ කිහිපයක්</p>
+            <div class="cards-grid" id="homeFeaturedProducts"></div>
+
+            <h2 class="section-title" style="margin-top:24px;" data-i18n="featured_services">🛠️ විශේෂාංග සේවා</h2>
+            <p class="section-subtitle" data-i18n="featured_services_sub">ඔබගේ අවශ්‍යතා සඳහා වෘත්තීය සේවා</p>
+            <div class="cards-grid" id="homeFeaturedServices"></div>
+        </section>
+
+        <!-- PRODUCTS PAGE -->
+        <section class="page-section" id="page-products">
+            <h2 class="section-title" data-i18n="all_products">📦 සියලුම භාණ්ඩ</h2>
+            <p class="section-subtitle" data-i18n="all_products_sub">සියලුම භාණ්ඩ බලන්න - Daraz Affiliate භාණ්ඩද ඇතුළත්ව</p>
+            <div class="filter-tabs" id="productFilters">
+                <button class="filter-tab active" data-filter="all" onclick="filterProducts('all')" data-i18n="filter_all">සියල්ල</button>
+                <button class="filter-tab" data-filter="own" onclick="filterProducts('own')" data-i18n="filter_own">E-Mix භාණ්ඩ</button>
+                <button class="filter-tab" data-filter="daraz" onclick="filterProducts('daraz')" data-i18n="filter_daraz">Daraz Affiliate</button>
+            </div>
+            <div class="cards-grid" id="allProducts"></div>
+        </section>
+
+        <!-- SERVICES PAGE -->
+        <section class="page-section" id="page-services">
+            <h2 class="section-title" data-i18n="all_services">🛠️ සියලුම සේවා</h2>
+            <p class="section-subtitle" data-i18n="all_services_sub">වෙබ් නිර්මාණය, මෘදුකාංග හා තවත්</p>
+            <div class="cards-grid" id="allServices"></div>
+        </section>
+
+        <!-- ADMIN PAGE (hidden from public navigation, accessible via #/admin/login) -->
+        <section class="page-section" id="page-admin">
+            <!-- Admin Login Form -->
+            <div class="admin-login-form" id="adminLoginForm">
+                <h2>🔐 <span data-i18n="admin_login">පරිපාලන පිවිසුම</span></h2>
+                <p class="subtitle" data-i18n="admin_login_sub">ඔබගේ විද්‍යුත් ලිපිනය හා මුරපදය ඇතුළත් කරන්න</p>
+                <div class="form-group">
+                    <label data-i18n="email">විද්‍යුත් ලිපිනය (Email)</label>
+                    <input type="email" id="adminEmail" placeholder="admin@emix.lk" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="password">මුරපදය (Password)</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" onclick="adminLogin()" data-i18n="login_btn">පිවිසෙන්න</button>
+                <p style="text-align:center;font-size:11px;color:var(--text-light);margin-top:12px;" data-i18n="admin_hint">Default: admin@emix.lk / admin123</p>
+            </div>
+
+            <!-- Admin Dashboard -->
+            <div class="admin-dashboard" id="adminDashboard">
+                <div class="admin-header">
+                    <h2>⚙️ <span data-i18n="admin_dashboard">පරිපාලන පාලක පැනලය</span></h2>
+                    <button class="btn btn-outline btn-sm" onclick="adminLogout()" data-i18n="logout">ඉවත් වන්න</button>
+                </div>
+
+                <div class="admin-tabs" id="adminTabs">
+                    <button class="admin-tab active" data-tab="tab-products" onclick="switchAdminTab('tab-products')">📦 <span data-i18n="manage_products">භාණ්ඩ</span></button>
+                    <button class="admin-tab" data-tab="tab-services" onclick="switchAdminTab('tab-services')">🛠️ <span data-i18n="manage_services">සේවා</span></button>
+                    <button class="admin-tab" data-tab="tab-daraz" onclick="switchAdminTab('tab-daraz')">🛒 <span data-i18n="manage_daraz">Daraz</span></button>
+                    <button class="admin-tab" data-tab="tab-settings" onclick="switchAdminTab('tab-settings')">⚙️ <span data-i18n="settings">සැකසුම්</span></button>
+                </div>
+
+                <!-- Products Panel -->
+                <div class="admin-panel active" id="tab-products">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <h3 style="font-size:16px;font-weight:700;" data-i18n="product_list">භාණ්ඩ ලැයිස්තුව</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openAddModal('product')">+ <span data-i18n="add_product">භාණ්ඩයක් එක් කරන්න</span></button>
+                    </div>
+                    <div class="admin-item-list" id="adminProductList"></div>
+                </div>
+
+                <!-- Services Panel -->
+                <div class="admin-panel" id="tab-services">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <h3 style="font-size:16px;font-weight:700;" data-i18n="service_list">සේවා ලැයිස්තුව</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openAddModal('service')">+ <span data-i18n="add_service">සේවාවක් එක් කරන්න</span></button>
+                    </div>
+                    <div class="admin-item-list" id="adminServiceList"></div>
+                </div>
+
+                <!-- Daraz Panel -->
+                <div class="admin-panel" id="tab-daraz">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <h3 style="font-size:16px;font-weight:700;" data-i18n="daraz_list">Daraz Affiliate භාණ්ඩ</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openAddModal('daraz')">+ <span data-i18n="add_daraz">Daraz භාණ්ඩයක් එක් කරන්න</span></button>
+                    </div>
+                    <div class="admin-item-list" id="adminDarazList"></div>
+                </div>
+
+                <!-- Settings Panel -->
+                <div class="admin-panel" id="tab-settings">
+                    <div class="settings-form">
+                        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;" data-i18n="business_settings">ව්‍යාපාර සැකසුම්</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-i18n="business_name">ව්‍යාපාර නම</label>
+                                <input type="text" id="settingsName" value="E-Mix">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="business_phone">දුරකථන අංකය</label>
+                                <input type="text" id="settingsPhone" value="0715205901">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>WhatsApp</label>
+                                <input type="text" id="settingsWhatsapp" value="94782482855">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="business_location">ස්ථානය</label>
+                                <input type="text" id="settingsLocation" value="Anuradhapura, Sri Lanka">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook URL</label>
+                            <input type="url" id="settingsFacebook" value="https://web.facebook.com/people/E-Mix/61553416852131/">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="admin_email_setting">පරිපාලන විද්‍යුත් ලිපිනය</label>
+                            <input type="email" id="settingsAdminEmail" value="admin@emix.lk">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="admin_password_setting">පරිපාලන මුරපදය</label>
+                            <input type="password" id="settingsAdminPassword" value="admin123">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveSettings()" data-i18n="save_settings">සැකසුම් සුරකින්න</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/94782482855" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.41-1.49-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.22 5.11 4.51.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.84 9.84 0 01-1.51-5.25c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 016.99 2.9 9.82 9.82 0 012.9 6.99c0 5.45-4.44 9.88-9.89 9.88zm8.41-18.29A11.8 11.8 0 0012.05 0C5.5 0 .16 5.33.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.9 11.9 0 005.68 1.44h.01c6.55 0 11.88-5.33 11.88-11.89 0-3.18-1.24-6.16-3.48-8.4z"/></svg>
+    </a>
+
+    <!-- ADD/EDIT MODAL -->
+    <div class="modal-overlay" id="addEditModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle" data-i18n="add_item">නව අයිතමයක් එක් කරන්න</h3>
+            <input type="hidden" id="modalEditId">
+            <input type="hidden" id="modalType">
+            <div class="form-group">
+                <label data-i18n="item_name">නම / මාතෘකාව</label>
+                <input type="text" id="modalName" placeholder="භාණ්ඩයේ නම">
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_desc">විස්තරය</label>
+                <textarea id="modalDesc" placeholder="කෙටි විස්තරයක්..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="item_price">මිල (Rs.)</label>
+                    <input type="number" id="modalPrice" placeholder="2500" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="item_link">බාහිර සබැඳිය (URL)</label>
+                    <input type="url" id="modalLink" placeholder="https://...">
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_image">පින්තූර URL</label>
+                <input type="url" id="modalImage" placeholder="https://example.com/image.jpg">
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_video">වීඩියෝ URL (විකල්ප)</label>
+                <input type="url" id="modalVideo" placeholder="https://example.com/video.mp4">
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_notes">වෙනත් සටහන් (විකල්ප)</label>
+                <textarea id="modalNotes" placeholder="අමතර තොරතුරු..." style="min-height:60px;"></textarea>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveModalItem()" data-i18n="save_item">සුරකින්න</button>
         </div>
     </div>
 
-    <footer>&copy; 2026 E-Mix Online Store. All Rights Reserved.</footer>
-
     <script>
-        let currentLang = 'si';
-        let allItems = []; 
+        // ============================================================
+        //  E-MIX WEBSITE - Updated with separate admin URL & Daraz links
+        // ============================================================
 
-        // භාෂා පරිවර්තන (Website UI සඳහා පමණක්)
+        // ===== TRANSLATIONS =====
         const translations = {
-            si: { tagline: "ඔබ අසල ඇති නවීන තාක්ෂණය, එය අත්විඳින්න..", selectCat: "ඔබට අවශ්‍ය අංශය <span>තෝරන්න</span>", catProd: "භාණ්ඩ", catServ: "සේවා", backBtn: "⬅ ආපසු", contactTitle: "අපව <span>සම්බන්ධ කරගන්න</span>", address: "📍 අනුරාධපුරය, ශ්‍රී ලංකාව", waBtn: "💬 WhatsApp", fbBtn: "📘 Facebook" },
-            en: { tagline: "New Technology Near You, Experience It..", selectCat: "Select Your <span>Category</span>", catProd: "Products", catServ: "Services", backBtn: "⬅ Back", contactTitle: "<span>Contact</span> Us", address: "📍 Anuradhapura, Sri Lanka", waBtn: "💬 WhatsApp", fbBtn: "📘 Facebook" },
-            ta: { tagline: "உங்களுக்கு அருகிலுள்ள புதிய தொழில்நுட்பம்..", selectCat: "உங்கள் வகையைத் <span>தேர்ந்தெடுக்கவும்</span>", catProd: "தயாரிப்புகள்", catServ: "சேவைகள்", backBtn: "⬅ பின்னால்", contactTitle: "எங்களை <span>தொடர்பு கொள்ள</span>", address: "📍 அனுராதபுரம், இலங்கை", waBtn: "💬 WhatsApp", fbBtn: "📘 Facebook" }
+            si: {
+                nav_home: 'මුල් පිටුව', nav_products: 'භාණ්ඩ', nav_services: 'සේවා',
+                nav_admin: 'පරිපාලනය', hero_badge: 'ශ්‍රී ලංකාවේ විශ්වාසනීය වෙළඳසැල',
+                hero_title: 'E-Mix', hero_desc: 'අනුරාධපුරයේ සිට ලොවටම - ගුණාත්මක භාණ්ඩ හා සේවා එකම තැනකින්.',
+                shop_now: 'දැන්ම මිලදී ගන්න', our_services: 'අපගේ සේවා', phone: 'දුරකථන',
+                location: 'ස්ථානය', featured_products: '🔥 විශේෂාංග භාණ්ඩ', featured_products_sub: 'අපගේ ජනප්‍රියම භාණ්ඩ කිහිපයක්',
+                featured_services: '🛠️ විශේෂාංග සේවා', featured_services_sub: 'ඔබගේ අවශ්‍යතා සඳහා වෘත්තීය සේවා',
+                all_products: '📦 සියලුම භාණ්ඩ', all_products_sub: 'සියලුම භාණ්ඩ බලන්න - Daraz Affiliate භාණ්ඩද ඇතුළත්ව',
+                all_services: '🛠️ සියලුම සේවා', all_services_sub: 'වෙබ් නිර්මාණය, මෘදුකාංග හා තවත්',
+                filter_all: 'සියල්ල', filter_own: 'E-Mix භාණ්ඩ', filter_daraz: 'Daraz Affiliate',
+                admin_login: 'පරිපාලන පිවිසුම', admin_login_sub: 'ඔබගේ විද්‍යුත් ලිපිනය හා මුරපදය ඇතුළත් කරන්න',
+                email: 'විද්‍යුත් ලිපිනය (Email)', password: 'මුරපදය (Password)', login_btn: 'පිවිසෙන්න',
+                admin_hint: 'Default: admin@emix.lk / admin123', admin_dashboard: 'පරිපාලන පාලක පැනලය',
+                logout: 'ඉවත් වන්න', manage_products: 'භාණ්ඩ', manage_services: 'සේවා', manage_daraz: 'Daraz',
+                settings: 'සැකසුම්', product_list: 'භාණ්ඩ ලැයිස්තුව', service_list: 'සේවා ලැයිස්තුව',
+                daraz_list: 'Daraz Affiliate භාණ්ඩ', add_product: 'භාණ්ඩයක් එක් කරන්න', add_service: 'සේවාවක් එක් කරන්න',
+                add_daraz: 'Daraz භාණ්ඩයක් එක් කරන්න', business_settings: 'ව්‍යාපාර සැකසුම්',
+                business_name: 'ව්‍යාපාර නම', business_phone: 'දුරකථන අංකය', business_location: 'ස්ථානය',
+                admin_email_setting: 'පරිපාලන විද්‍යුත් ලිපිනය', admin_password_setting: 'පරිපාලන මුරපදය',
+                save_settings: 'සැකසුම් සුරකින්න', add_item: 'නව අයිතමයක් එක් කරන්න', item_name: 'නම / මාතෘකාව',
+                item_desc: 'විස්තරය', item_price: 'මිල (Rs.)', item_link: 'බාහිර සබැඳිය (URL)', item_image: 'පින්තූර URL',
+                item_video: 'වීඩියෝ URL (විකල්ප)', item_notes: 'වෙනත් සටහන් (විකල්ප)', save_item: 'සුරකින්න',
+                buy_now: 'මිලදී ගන්න', share: 'බෙදාගන්න', view_link: 'සබැඳිය', whatsapp_share: 'WhatsApp',
+                facebook_share: 'Facebook', empty_products: 'තවමත් භාණ්ඩ නොමැත', empty_services: 'තවමත් සේවා නොමැත',
+                empty_daraz: 'තවමත් Daraz භාණ්ඩ නොමැත', confirm_delete: 'මෙය මකා දැමීමට ඔබට විශ්වාසද?',
+                edit: 'සංස්කරණය', delete: 'මකන්න', save_success: 'සාර්ථකව සුරැකිණි!', login_success: 'පිවිසුම සාර්ථකයි!',
+                login_error: 'පිවිසුම අසාර්ථකයි. නිවැරදි තොරතුරු ඇතුළත් කරන්න.', logout_success: 'ඔබ ඉවත් වී ඇත.',
+                settings_saved: 'සැකසුම් සුරකින ලදී!', delete_success: 'මකා දමන ලදී!', share_text: 'E-Mix වෙතින් මෙය බලන්න!',
+                shop_online: 'Online භාණ්ඩ හා සේවා', call_now: 'අමතන්න', daraz_go: 'Daraz වෙත යන්න',
+            },
+            en: {
+                nav_home: 'Home', nav_products: 'Products', nav_services: 'Services', nav_admin: 'Admin',
+                hero_badge: 'Trusted Sri Lankan Store', hero_title: 'E-Mix', hero_desc: 'From Anuradhapura to the world - quality products & services in one place.',
+                shop_now: 'Shop Now', our_services: 'Our Services', phone: 'Phone', location: 'Location',
+                featured_products: '🔥 Featured Products', featured_products_sub: 'Some of our most popular items',
+                featured_services: '🛠️ Featured Services', featured_services_sub: 'Professional services for your needs',
+                all_products: '📦 All Products', all_products_sub: 'Browse all products - including Daraz Affiliate items',
+                all_services: '🛠️ All Services', all_services_sub: 'Web design, software & more', filter_all: 'All',
+                filter_own: 'E-Mix Products', filter_daraz: 'Daraz Affiliate', admin_login: 'Admin Login',
+                admin_login_sub: 'Enter your email and password', email: 'Email Address', password: 'Password',
+                login_btn: 'Login', admin_hint: 'Default: admin@emix.lk / admin123', admin_dashboard: 'Admin Dashboard',
+                logout: 'Logout', manage_products: 'Products', manage_services: 'Services', manage_daraz: 'Daraz',
+                settings: 'Settings', product_list: 'Product List', service_list: 'Service List', daraz_list: 'Daraz Affiliate Products',
+                add_product: 'Add Product', add_service: 'Add Service', add_daraz: 'Add Daraz Product',
+                business_settings: 'Business Settings', business_name: 'Business Name', business_phone: 'Phone Number',
+                business_location: 'Location', admin_email_setting: 'Admin Email', admin_password_setting: 'Admin Password',
+                save_settings: 'Save Settings', add_item: 'Add New Item', item_name: 'Name / Title', item_desc: 'Description',
+                item_price: 'Price (Rs.)', item_link: 'External Link (URL)', item_image: 'Image URL', item_video: 'Video URL (optional)',
+                item_notes: 'Other Notes (optional)', save_item: 'Save', buy_now: 'Buy Now', share: 'Share', view_link: 'Link',
+                whatsapp_share: 'WhatsApp', facebook_share: 'Facebook', empty_products: 'No products yet', empty_services: 'No services yet',
+                empty_daraz: 'No Daraz products yet', confirm_delete: 'Are you sure you want to delete this?', edit: 'Edit',
+                delete: 'Delete', save_success: 'Saved successfully!', login_success: 'Login successful!', login_error: 'Login failed.',
+                logout_success: 'Logged out.', settings_saved: 'Settings saved!', delete_success: 'Deleted successfully!',
+                share_text: 'Check this out from E-Mix!', shop_online: 'Online Products & Services', call_now: 'Call',
+                daraz_go: 'Go to Daraz',
+            },
+            ta: {
+                nav_home: 'முகப்பு', nav_products: 'பொருட்கள்', nav_services: 'சேவைகள்', nav_admin: 'நிர்வாகம்',
+                hero_badge: 'நம்பகமான இலங்கை கடை', hero_title: 'E-Mix', hero_desc: 'அநுராதபுரத்திலிருந்து உலகிற்கு - தரமான பொருட்கள் & சேவைகள் ஒரே இடத்தில்.',
+                shop_now: 'இப்போது வாங்க', our_services: 'எங்கள் சேவைகள்', phone: 'தொலைபேசி', location: 'இடம்',
+                featured_products: '🔥 சிறப்பு பொருட்கள்', featured_products_sub: 'எங்கள் பிரபலமான சில பொருட்கள்',
+                featured_services: '🛠️ சிறப்பு சேவைகள்', featured_services_sub: 'உங்கள் தேவைகளுக்கான தொழில்முறை சேவைகள்',
+                all_products: '📦 அனைத்து பொருட்கள்', all_products_sub: 'அனைத்து பொருட்களையும் பார்க்கவும் - Daraz இணைப்பு பொருட்கள் உட்பட',
+                all_services: '🛠️ அனைத்து சேவைகள்', all_services_sub: 'வலை வடிவமைப்பு, மென்பொருள் & மேலும்', filter_all: 'அனைத்தும்',
+                filter_own: 'E-Mix பொருட்கள்', filter_daraz: 'Daraz இணைப்பு', admin_login: 'நிர்வாக உள்நுழைவு',
+                admin_login_sub: 'உங்கள் மின்னஞ்சல் மற்றும் கடவுச்சொல்லை உள்ளிடவும்', email: 'மின்னஞ்சல் முகவரி',
+                password: 'கடவுச்சொல்', login_btn: 'உள்நுழைய', admin_hint: 'இயல்புநிலை: admin@emix.lk / admin123',
+                admin_dashboard: 'நிர்வாக டாஷ்போர்டு', logout: 'வெளியேறு', manage_products: 'பொருட்கள்',
+                manage_services: 'சேவைகள்', manage_daraz: 'Daraz', settings: 'அமைப்புகள்', product_list: 'பொருட்கள் பட்டியல்',
+                service_list: 'சேவைகள் பட்டியல்', daraz_list: 'Daraz இணைப்பு பொருட்கள்', add_product: 'பொருள் சேர்க்க',
+                add_service: 'சேவை சேர்க்க', add_daraz: 'Daraz பொருள் சேர்க்க', business_settings: 'வணிக அமைப்புகள்',
+                business_name: 'வணிக பெயர்', business_phone: 'தொலைபேசி எண்', business_location: 'இடம்',
+                admin_email_setting: 'நிர்வாக மின்னஞ்சல்', admin_password_setting: 'நிர்வாக கடவுச்சொல்',
+                save_settings: 'அமைப்புகளை சேமிக்க', add_item: 'புதிய உருப்படியை சேர்க்க', item_name: 'பெயர் / தலைப்பு',
+                item_desc: 'விளக்கம்', item_price: 'விலை (Rs.)', item_link: 'வெளி இணைப்பு (URL)', item_image: 'பட URL',
+                item_video: 'வீடியோ URL (விருப்பம்)', item_notes: 'பிற குறிப்புகள் (விருப்பம்)', save_item: 'சேமிக்க',
+                buy_now: 'வாங்க', share: 'பகிர்', view_link: 'இணைப்பு', whatsapp_share: 'WhatsApp', facebook_share: 'Facebook',
+                empty_products: 'இன்னும் பொருட்கள் இல்லை', empty_services: 'இன்னும் சேவைகள் இல்லை', empty_daraz: 'இன்னும் Daraz பொருட்கள் இல்லை',
+                confirm_delete: 'இதை நீக்க விரும்புகிறீர்களா?', edit: 'திருத்து', delete: 'நீக்கு', save_success: 'வெற்றிகரமாக சேமிக்கப்பட்டது!',
+                login_success: 'உள்நுழைவு வெற்றி!', login_error: 'உள்நுழைவு தோல்வி.', logout_success: 'நீங்கள் வெளியேறிவிட்டீர்கள்.',
+                settings_saved: 'அமைப்புகள் சேமிக்கப்பட்டன!', delete_success: 'வெற்றிகரமாக நீக்கப்பட்டது!',
+                share_text: 'E-Mix இலிருந்து இதைப் பாருங்கள்!', shop_online: 'ஆன்லைன் பொருட்கள் & சேவைகள்',
+                call_now: 'அழைக்க', daraz_go: 'Daraz க்கு செல்ல',
+            }
         };
 
-        function setLanguage(lang) {
-            currentLang = lang;
+        // ===== SUPABASE CONFIGURATION =====
+        const SUPABASE_URL = 'https://YOUR-PROJECT.supabase.co';
+        const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+        const USE_SUPABASE = false;
+
+        // ===== STATE =====
+        let currentPage = 'home';
+        let currentLanguage = 'si';
+        let isAdminLoggedIn = false;
+        let currentProductFilter = 'all';
+        let currentAdminTab = 'tab-products';
+
+        const DEFAULT_DATA = {
+            settings: {
+                businessName: 'E-Mix', phone: '0715205901', whatsapp: '94782482855',
+                location: 'Anuradhapura, Sri Lanka', facebook: 'https://web.facebook.com/people/E-Mix/61553416852131/',
+                adminEmail: 'admin@emix.lk', adminPassword: 'admin123'
+            },
+            products: [
+                { id: 'p1', name: 'බ්ලූටූත් ස්පීකරය', name_en: 'Bluetooth Speaker', name_ta: 'புளூடூத் ஸ்பீக்கர்',
+                    desc: 'උසස් තත්ත්වයේ අතේ ගෙන යා හැකි බ්ලූටූත් ස්පීකරයක්', desc_en: 'High quality portable Bluetooth speaker',
+                    desc_ta: 'உயர் தர போர்ட்டபிள் புளூடூத் ஸ்பீக்கர்', price: 4500, image: '', video: '',
+                    link: 'https://wa.me/94782482855?text=Bluetooth%20Speaker', notes: 'වර්ණ: කළු, නිල්', type: 'own', createdAt: Date.now() },
+                { id: 'p2', name: 'ස්මාර්ට් වොච්', name_en: 'Smart Watch', name_ta: 'ஸ்மார்ட் வாட்ச்',
+                    desc: 'හෘද ස්පන්දන මොනිටරය සහිත ස්මාර්ට් ඔරලෝසුව', desc_en: 'Smart watch with heart rate monitor',
+                    desc_ta: 'இதய துடிப்பு மானிட்டருடன் ஸ்மார்ட் வாட்ச்', price: 8500, image: '', video: '',
+                    link: 'https://wa.me/94782482855?text=Smart%20Watch', notes: '', type: 'own', createdAt: Date.now() },
+                { id: 'p3', name: 'Daraz - රැහැන් රහිත ඉයර්බඩ්ස්', name_en: 'Daraz - Wireless Earbuds',
+                    name_ta: 'Daraz - வயர்லெஸ் இயர்பட்ஸ்', desc: 'Daraz Affiliate - රැහැන් රහිත ඉයර්බඩ්ස් විශේෂ දීමනාව',
+                    desc_en: 'Daraz Affiliate - Wireless earbuds special offer', desc_ta: 'Daraz இணைப்பு - வயர்லெஸ் இயர்பட்ஸ் சிறப்பு சலுகை',
+                    price: 3200, image: '', video: '', link: 'https://www.daraz.lk/', notes: 'Daraz සබැඳිය හරහා මිලදී ගන්න',
+                    type: 'daraz', createdAt: Date.now() },
+            ],
+            services: [
+                { id: 's1', name: 'වෙබ් පිටු නිර්මාණය', name_en: 'Website Design', name_ta: 'இணையதள வடிவமைப்பு',
+                    desc: 'ඔබගේ ව්‍යාපාරය සඳහා නවීන, ජංගම-හිතකාමී වෙබ් පිටු නිර්මාණය', desc_en: 'Modern, mobile-friendly website design',
+                    desc_ta: 'உங்கள் வணிகத்திற்கான நவீன, மொபைல் நட்பு இணையதள வடிவமைப்பு', price: 25000, image: '', video: '',
+                    link: 'https://wa.me/94782482855?text=Website%20Design', notes: 'ව්‍යාපෘතිය අනුව මිල වෙනස් විය හැක', type: 'service', createdAt: Date.now() },
+                { id: 's2', name: 'මෘදුකාංග නිර්මාණය', name_en: 'Software Development', name_ta: 'மென்பொருள் மேம்பாடு',
+                    desc: 'අභිරුචි මෘදුකාංග විසඳුම් - ඔබගේ අවශ්‍යතා අනුව', desc_en: 'Custom software solutions tailored to your needs',
+                    desc_ta: 'உங்கள் தேவைகளுக்கு ஏற்ப தனிப்பயன் மென்பொருள் தீர்வுகள்', price: 50000, image: '', video: '',
+                    link: 'https://wa.me/94782482855?text=Software', notes: 'නොමිලේ උපදේශනය', type: 'service', createdAt: Date.now() },
+            ],
+            darazProducts: [
+                { id: 'd1', name: 'Daraz - ස්මාර්ට් LED ලයිට්', name_en: 'Daraz - Smart LED Light',
+                    name_ta: 'Daraz - ஸ்மார்ட் LED விளக்கு', desc: 'WiFi ස්මාර්ට් LED බල්බ - Daraz විශේෂ මිල',
+                    desc_en: 'WiFi smart LED bulb - Daraz special price', desc_ta: 'WiFi ஸ்மார்ட் LED பல்ப் - Daraz சிறப்பு விலை',
+                    price: 1800, image: '', video: '', link: 'https://www.daraz.lk/', notes: 'Daraz Affiliate', type: 'daraz', createdAt: Date.now() },
+            ]
+        };
+
+        let appData = null;
+
+        function getData() {
+            if (appData) return appData;
+            const stored = localStorage.getItem('emix_data');
+            if (stored) {
+                try {
+                    appData = JSON.parse(stored);
+                    if (!appData.settings) appData.settings = { ...DEFAULT_DATA.settings };
+                    if (!appData.products) appData.products = [];
+                    if (!appData.services) appData.services = [];
+                    if (!appData.darazProducts) appData.darazProducts = [];
+                    return appData;
+                } catch (e) {
+                    appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+                }
+            } else {
+                appData = JSON.parse(JSON.stringify(DEFAULT_DATA));
+            }
+            saveData();
+            return appData;
+        }
+
+        function saveData() {
+            if (appData) localStorage.setItem('emix_data', JSON.stringify(appData));
+        }
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.body.setAttribute('data-lang', lang);
             document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if(btn.getAttribute('onclick').includes(`'${lang}'`)) btn.classList.add('active');
+                btn.classList.toggle('active', btn.dataset.lang === lang);
             });
-
-            document.getElementById('txt-tagline').innerText = translations[lang].tagline;
-            document.getElementById('txt-select-cat').innerHTML = translations[lang].selectCat;
-            document.getElementById('txt-cat-products').innerText = translations[lang].catProd;
-            document.getElementById('txt-cat-services').innerText = translations[lang].catServ;
-            document.getElementById('btn-back').innerText = translations[lang].backBtn;
-            document.getElementById('txt-contact-title').innerHTML = translations[lang].contactTitle;
-            document.getElementById('txt-address').innerText = translations[lang].address;
-            document.getElementById('txt-wa').innerText = translations[lang].waBtn;
-            document.getElementById('txt-fb').innerText = translations[lang].fbBtn;
-            
-            // දැනට Data view එකේ ඉන්නවා නම් Title එක මාරු කරන්න
-            let viewTitle = document.getElementById('view-title').innerHTML;
-            if(viewTitle.includes('භාණ්ඩ') || viewTitle.includes('Products') || viewTitle.includes('தயாரிப்புகள்')) {
-                document.getElementById('view-title').innerHTML = lang === 'si' ? "අපගේ <span>භාණ්ඩ</span>" : (lang === 'en' ? "Our <span>Products</span>" : "எங்கள் <span>தயாரிப்புகள்</span>");
-            } else {
-                document.getElementById('view-title').innerHTML = lang === 'si' ? "අපගේ <span>සේවා</span>" : (lang === 'en' ? "Our <span>Services</span>" : "எங்கள் <span>சேவைகள்</span>");
-            }
+            localStorage.setItem('emix_lang', lang);
+            applyTranslations();
+            renderAll();
         }
 
-        function setContactDetails() {
-            document.getElementById('btn-call').href = `tel:${contactInfo.phone}`;
-            document.getElementById('btn-call').innerHTML = `📞 ${contactInfo.phone}`;
-            
-            // WhatsApp Link එකට සාමාන්‍ය පණිවිඩයක් එකතු කිරීම
-            let waMsg = encodeURIComponent("Hello E-Mix, I would like to know more details.");
-            document.getElementById('txt-wa').href = `https://wa.me/${contactInfo.whatsapp}?text=${waMsg}`;
-            
-            document.getElementById('txt-fb').href = contactInfo.facebook;
-        }
-
-        // Google Drive පින්තූර වෙබ් අඩවියට සහාය දක්වන ලෙස සකස් කිරීම
-        function fixGoogleDriveImage(url) {
-            if (url && url.includes('drive.google.com')) {
-                let id = url.match(/[-\w]{25,}/); 
-                if (id) { return `https://drive.google.com/uc?export=view&id=${id[0]}`; }
-            }
-            return url;
-        }
-
-        function fetchGoogleSheetData() {
-            Papa.parse(googleSheetCSV, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    allItems = results.data;
-                    document.getElementById('loading').style.display = 'none';
-                    document.getElementById('home-view').style.display = 'block'; // දත්ත ආ පසු මුල් පිටුව පෙන්වයි
-                },
-                error: function(err) {
-                    document.getElementById('loading').innerHTML = "⚠️ දත්ත ලබා ගැනීමේදී දෝෂයක් ඇති විය. කරුණාකර අන්තර්ජාල සම්බන්ධතාවය පරීක්ෂා කරන්න.";
-                }
+        function applyTranslations() {
+            const t = translations[currentLanguage] || translations.si;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
             });
         }
 
-        function showCategory(categoryType) {
-            document.getElementById('home-view').style.display = 'none';
-            document.getElementById('data-view').style.display = 'block';
-            window.scrollTo({ top: 150, behavior: 'smooth' }); // Scroll to top smoothly
-            
-            // මාතෘකාව සැකසීම
-            if(categoryType === 'Product') {
-                document.getElementById('view-title').innerHTML = currentLang === 'si' ? "අපගේ <span>භාණ්ඩ</span>" : (currentLang === 'en' ? "Our <span>Products</span>" : "எங்கள் <span>தயாரிப்புகள்</span>");
-            } else {
-                document.getElementById('view-title').innerHTML = currentLang === 'si' ? "අපගේ <span>සේවා</span>" : (currentLang === 'en' ? "Our <span>Services</span>" : "எங்கள் <span>சேவைகள்</span>");
-            }
+        function t(key) {
+            return (translations[currentLanguage] || translations.si)[key] || translations.si[key] || key;
+        }
 
-            const container = document.getElementById('items-container');
-            container.innerHTML = '';
+        function getLocalizedName(item) {
+            if (currentLanguage === 'si') return item.name || item.name_en || '';
+            if (currentLanguage === 'en') return item.name_en || item.name || '';
+            if (currentLanguage === 'ta') return item.name_ta || item.name || item.name_en || '';
+            return item.name || '';
+        }
 
-            // තෝරාගත් අංශයට අදාළ දත්ත පෙරීම (Filter by Type - Product/Service)
-            const filteredData = allItems.filter(item => {
-                let type = (item.Type || "").trim().toLowerCase();
-                if(categoryType === 'Product') {
-                    return type === 'product' || type === 'භාණ්ඩ';
+        function getLocalizedDesc(item) {
+            if (currentLanguage === 'si') return item.desc || item.desc_en || '';
+            if (currentLanguage === 'en') return item.desc_en || item.desc || '';
+            if (currentLanguage === 'ta') return item.desc_ta || item.desc || item.desc_en || '';
+            return item.desc || '';
+        }
+
+        // ===== NAVIGATION =====
+        function navigateTo(page) {
+            if (page === 'admin') return; // Admin is only accessible via hash
+            currentPage = page;
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+            const target = document.getElementById('page-' + page);
+            if (target) target.classList.add('active');
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+            document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === page));
+            document.getElementById('navLinks').classList.remove('open');
+            document.getElementById('hamburgerBtn').classList.remove('open');
+            renderAll();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileNav() {
+            document.getElementById('navLinks').classList.toggle('open');
+            document.getElementById('hamburgerBtn').classList.toggle('open');
+        }
+
+        // ===== HASH ROUTING FOR ADMIN =====
+        function handleHashRouting() {
+            const hash = window.location.hash;
+            const data = getData();
+            const adminSection = document.getElementById('page-admin');
+            const homeSection = document.getElementById('page-home');
+            const productsSection = document.getElementById('page-products');
+            const servicesSection = document.getElementById('page-services');
+
+            // Hide all sections initially
+            document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+
+            if (hash.startsWith('#/admin')) {
+                // Admin route
+                adminSection.classList.add('active');
+                currentPage = 'admin';
+                // Show login or dashboard based on auth state
+                const loginForm = document.getElementById('adminLoginForm');
+                const dashboard = document.getElementById('adminDashboard');
+                if (isAdminLoggedIn) {
+                    loginForm.style.display = 'none';
+                    dashboard.classList.add('active');
+                    renderAdminLists();
                 } else {
-                    return type === 'service' || type === 'සේවා';
+                    loginForm.style.display = 'block';
+                    dashboard.classList.remove('active');
                 }
-            });
+            } else {
+                // Public routes
+                if (hash === '#/products') {
+                    productsSection.classList.add('active');
+                    currentPage = 'products';
+                } else if (hash === '#/services') {
+                    servicesSection.classList.add('active');
+                    currentPage = 'services';
+                } else {
+                    homeSection.classList.add('active');
+                    currentPage = 'home';
+                }
+                // Update nav active states
+                document.querySelectorAll('.nav-link').forEach(n => n.classList.toggle('active', n.dataset.page === currentPage));
+                document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === currentPage));
+                renderAll();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-            if(filteredData.length === 0) {
-                container.innerHTML = `<p style="text-align:center; width:100%; color:var(--text-muted);">මෙම අංශයේ දත්ත තවම ඇතුළත් කර නොමැත.</p>`;
+        // Listen for hash changes
+        window.addEventListener('hashchange', handleHashRouting);
+
+        // Override navigateTo for public pages to update hash
+        const originalNavigateTo = navigateTo;
+        navigateTo = function(page) {
+            if (page === 'admin') {
+                window.location.hash = '#/admin/login';
                 return;
             }
-
-            // Cards නිර්මාණය කිරීම
-            filteredData.forEach(item => {
-                // Sheet එකේ Header නම් වෙනස් වුවහොත් දත්ත ලබාගන්නා ආකාරය
-                const name = item.Name || item.name || '';
-                const price = item.Price || item.price || 'මිල සඳහන් කර නැත';
-                const desc = item.Description || item.description || '';
-                const imageUrl = fixGoogleDriveImage(item.Image || item.image);
-                
-                const imageHTML = imageUrl ? `<img src="${imageUrl}" alt="${name}">` : `<div style="display:flex; height:100%; align-items:center; justify-content:center; color:#555;">No Image</div>`;
-                
-                // WhatsApp හරහා භාණ්ඩය ගැන විමසීමට Link එක සකස් කිරීම
-                let itemWaMsg = encodeURIComponent(`Hello E-Mix, I would like to know more about this item: ${name} (Price: ${price})`);
-                let buyLink = `https://wa.me/${contactInfo.whatsapp}?text=${itemWaMsg}`;
-
-                const cardHTML = `
-                    <div class="item-card">
-                        <div class="item-img-container">${imageHTML}</div>
-                        <div class="item-details">
-                            <h3 class="item-title">${name}</h3>
-                            <div class="item-price">Rs. ${price}</div>
-                            <p class="item-desc">${desc}</p>
-                            <a href="${buyLink}" target="_blank" class="buy-btn">🛒 Buy Now / විමසන්න</a>
-                        </div>
-                    </div>
-                `;
-                container.innerHTML += cardHTML;
-            });
-        }
-
-        function goBack() {
-            document.getElementById('home-view').style.display = 'block';
-            document.getElementById('data-view').style.display = 'none';
-        }
-
-        window.onload = () => {
-            setContactDetails();
-            setLanguage('si'); 
-            fetchGoogleSheetData(); 
+            if (page === 'home') window.location.hash = '#/';
+            else if (page === 'products') window.location.hash = '#/products';
+            else if (page === 'services') window.location.hash = '#/services';
+            // The hashchange listener will handle the actual rendering
         };
+
+        function toggleMobileNav() {
+            document.getElementById('navLinks').classList.toggle('open');
+            document.getElementById('hamburgerBtn').classList.toggle('open');
+        }
+
+        // ===== RENDER =====
+        function renderAll() {
+            const data = getData();
+            renderHome(data);
+            renderProducts(data);
+            renderServices(data);
+            applyTranslations();
+        }
+
+        function renderHome(data) {
+            const prodContainer = document.getElementById('homeFeaturedProducts');
+            const prods = data.products.slice(0, 4);
+            if (prodContainer) {
+                prodContainer.innerHTML = prods.length === 0 ? 
+                    `<div class="empty-state"><div class="empty-icon">📦</div><h3>${t('empty_products')}</h3></div>` :
+                    prods.map(p => createCardHTML(p, 'product')).join('');
+            }
+            const servContainer = document.getElementById('homeFeaturedServices');
+            const servs = data.services.slice(0, 4);
+            if (servContainer) {
+                servContainer.innerHTML = servs.length === 0 ? 
+                    `<div class="empty-state"><div class="empty-icon">🛠️</div><h3>${t('empty_services')}</h3></div>` :
+                    servs.map(s => createCardHTML(s, 'service')).join('');
+            }
+            attachCardEvents();
+        }
+
+        function renderProducts(data) {
+            const container = document.getElementById('allProducts');
+            if (!container) return;
+            let products = [...data.products, ...data.darazProducts];
+            if (currentProductFilter === 'own') products = data.products;
+            else if (currentProductFilter === 'daraz') products = data.darazProducts;
+            container.innerHTML = products.length === 0 ? 
+                `<div class="empty-state"><div class="empty-icon">📦</div><h3>${t('empty_products')}</h3></div>` :
+                products.map(p => createCardHTML(p, p.type === 'daraz' ? 'daraz' : 'product')).join('');
+            attachCardEvents();
+        }
+
+        function renderServices(data) {
+            const container = document.getElementById('allServices');
+            if (!container) return;
+            container.innerHTML = data.services.length === 0 ? 
+                `<div class="empty-state"><div class="empty-icon">🛠️</div><h3>${t('empty_services')}</h3></div>` :
+                data.services.map(s => createCardHTML(s, 'service')).join('');
+            attachCardEvents();
+        }
+
+        function createCardHTML(item, type) {
+            const name = getLocalizedName(item);
+            const desc = getLocalizedDesc(item);
+            const price = item.price || 0;
+            const imageUrl = item.image || '';
+            const videoUrl = item.video || '';
+            const link = item.link || '#';
+            const isDaraz = type === 'daraz';
+            const badgeText = isDaraz ? 'Daraz' : (type === 'service' ? t('nav_services') : 'E-Mix');
+            const badgeClass = isDaraz ? 'daraz' : (type === 'service' ? 'service' : '');
+
+            let mediaHTML = '';
+            if (imageUrl) {
+                mediaHTML = `<img src="${imageUrl}" alt="${name}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><div class="placeholder-img" style="display:none;">📷</div>`;
+            } else if (videoUrl) {
+                mediaHTML = `<video src="${videoUrl}" muted loop playsinline preload="metadata"></video>`;
+            } else {
+                mediaHTML = `<div class="placeholder-img">📷</div>`;
+            }
+
+            // For Daraz products, clicking card or buy button should open affiliate link
+            const cardClickHandler = isDaraz ? `onclick="openDarazLink('${link}')"` : '';
+            const mediaClickHandler = isDaraz ? `onclick="openDarazLink('${link}')"` : '';
+            const titleClickHandler = isDaraz ? `onclick="openDarazLink('${link}')"` : '';
+
+            const buyButton = isDaraz ? 
+                `<button class="btn btn-daraz btn-xs" onclick="openDarazLink('${link}')">🛒 ${t('daraz_go')}</button>` :
+                `<button class="btn btn-buy btn-xs" onclick="buyItem('${item.id}', '${type}')">🛒 ${t('buy_now')}</button>`;
+
+            const linkButton = (link && link !== '#') ? 
+                `<button class="btn btn-link btn-xs" onclick="openLink('${link}')">🔗 ${t('view_link')}</button>` : '';
+
+            return `
+            <div class="card" data-id="${item.id}" data-type="${type}" ${cardClickHandler}>
+                <div class="card-media" ${mediaClickHandler}>
+                    ${badgeClass ? `<span class="card-badge ${badgeClass}">${badgeText}</span>` : ''}
+                    ${mediaHTML}
+                </div>
+                <div class="card-body">
+                    <div class="card-title" ${titleClickHandler}>${name}</div>
+                    <div class="card-desc">${desc}</div>
+                    <div class="card-price">Rs. ${price.toLocaleString()}</div>
+                    <div class="card-actions">
+                        ${buyButton}
+                        <button class="btn btn-share btn-xs" onclick="shareItem('${item.id}', '${type}', 'whatsapp')">📤 ${t('share')}</button>
+                        ${linkButton}
+                    </div>
+                    <div class="card-actions" style="margin-top:4px;">
+                        <button class="btn btn-whatsapp btn-xs" onclick="shareToWhatsApp('${item.id}', '${type}')">💬 ${t('whatsapp_share')}</button>
+                        <button class="btn btn-facebook btn-xs" onclick="shareToFacebook('${item.id}', '${type}')">📘 ${t('facebook_share')}</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        }
+
+        function attachCardEvents() {
+            // Events handled via inline onclick
+        }
+
+        // ===== DARAZ LINK =====
+        function openDarazLink(link) {
+            if (link && link !== '#') {
+                window.open(link, '_blank');
+            } else {
+                showToast('Link not set', 'error');
+            }
+        }
+
+        function filterProducts(filter) {
+            currentProductFilter = filter;
+            document.querySelectorAll('#productFilters .filter-tab').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+            renderProducts(getData());
+        }
+
+        function buyItem(id, type) {
+            const data = getData();
+            let item = null;
+            if (type === 'product' || type === 'own') item = data.products.find(p => p.id === id);
+            else if (type === 'daraz') item = data.darazProducts.find(p => p.id === id);
+            else if (type === 'service') item = data.services.find(s => s.id === id);
+            if (item) {
+                const name = getLocalizedName(item);
+                const waNum = data.settings.whatsapp || '94782482855';
+                const msg = encodeURIComponent(`මට මෙය මිලදී ගැනීමට අවශ්‍යයි: ${name} (Rs. ${item.price})`);
+                window.open(`https://wa.me/${waNum}?text=${msg}`, '_blank');
+            }
+        }
+
+        function shareItem(id, type, platform) {
+            const data = getData();
+            let item = null;
+            if (type === 'product' || type === 'own') item = data.products.find(p => p.id === id);
+            else if (type === 'daraz') item = data.darazProducts.find(p => p.id === id);
+            else if (type === 'service') item = data.services.find(s => s.id === id);
+            if (item) {
+                const name = getLocalizedName(item);
+                const text = encodeURIComponent(`${name} - E-Mix | Anuradhapura, Sri Lanka`);
+                const url = encodeURIComponent(window.location.href);
+                if (platform === 'whatsapp') window.open(`https://wa.me/?text=${text}%20${url}`, '_blank');
+                else if (platform === 'facebook') window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank');
+            }
+        }
+
+        function shareToWhatsApp(id, type) { shareItem(id, type, 'whatsapp'); }
+        function shareToFacebook(id, type) { shareItem(id, type, 'facebook'); }
+        function openLink(url) { if (url && url !== '#') window.open(url, '_blank'); }
+
+        // ===== ADMIN =====
+        function adminLogin() {
+            const data = getData();
+            const email = document.getElementById('adminEmail').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const adminEmail = data.settings.adminEmail || 'admin@emix.lk';
+            const adminPassword = data.settings.adminPassword || 'admin123';
+            if (email === adminEmail && password === adminPassword) {
+                isAdminLoggedIn = true;
+                sessionStorage.setItem('emix_admin_logged_in', 'true');
+                showToast(t('login_success'), 'success');
+                updateAdminUI();
+                document.getElementById('adminPassword').value = '';
+            } else {
+                showToast(t('login_error'), 'error');
+            }
+        }
+
+        function adminLogout() {
+            isAdminLoggedIn = false;
+            sessionStorage.removeItem('emix_admin_logged_in');
+            showToast(t('logout_success'), 'info');
+            updateAdminUI();
+        }
+
+        function updateAdminUI() {
+            const loginForm = document.getElementById('adminLoginForm');
+            const dashboard = document.getElementById('adminDashboard');
+            if (sessionStorage.getItem('emix_admin_logged_in') === 'true') isAdminLoggedIn = true;
+            if (isAdminLoggedIn) {
+                if (loginForm) loginForm.style.display = 'none';
+                if (dashboard) { dashboard.classList.add('active'); renderAdminLists(); }
+            } else {
+                if (loginForm) loginForm.style.display = 'block';
+                if (dashboard) dashboard.classList.remove('active');
+            }
+        }
+
+        function switchAdminTab(tabId) {
+            currentAdminTab = tabId;
+            document.querySelectorAll('.admin-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tabId));
+            document.querySelectorAll('.admin-panel').forEach(panel => panel.classList.toggle('active', panel.id === tabId));
+            renderAdminLists();
+        }
+
+        function renderAdminLists() {
+            const data = getData();
+            const prodList = document.getElementById('adminProductList');
+            if (prodList) {
+                prodList.innerHTML = data.products.length === 0 ? 
+                    `<div class="empty-state"><p>${t('empty_products')}</p></div>` :
+                    data.products.map(p => `
+                        <div class="admin-item">
+                            ${p.image ? `<img src="${p.image}" alt="" onerror="this.style.display='none'">` : '<div style="width:50px;height:50px;border-radius:8px;background:#f0f0f5;display:flex;align-items:center;justify-content:center;font-size:20px;">📦</div>'}
+                            <div class="admin-item-info"><div class="name">${getLocalizedName(p)}</div><div class="meta">Rs. ${(p.price||0).toLocaleString()}</div></div>
+                            <div class="admin-item-actions">
+                                <button class="btn btn-outline btn-xs" onclick="editItem('${p.id}', 'product')">${t('edit')}</button>
+                                <button class="btn btn-outline btn-xs" style="color:#e74c3c;border-color:#e74c3c;" onclick="deleteItem('${p.id}', 'product')">${t('delete')}</button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+            const servList = document.getElementById('adminServiceList');
+            if (servList) {
+                servList.innerHTML = data.services.length === 0 ? 
+                    `<div class="empty-state"><p>${t('empty_services')}</p></div>` :
+                    data.services.map(s => `
+                        <div class="admin-item">
+                            ${s.image ? `<img src="${s.image}" alt="" onerror="this.style.display='none'">` : '<div style="width:50px;height:50px;border-radius:8px;background:#f0f0f5;display:flex;align-items:center;justify-content:center;font-size:20px;">🛠️</div>'}
+                            <div class="admin-item-info"><div class="name">${getLocalizedName(s)}</div><div class="meta">Rs. ${(s.price||0).toLocaleString()}</div></div>
+                            <div class="admin-item-actions">
+                                <button class="btn btn-outline btn-xs" onclick="editItem('${s.id}', 'service')">${t('edit')}</button>
+                                <button class="btn btn-outline btn-xs" style="color:#e74c3c;border-color:#e74c3c;" onclick="deleteItem('${s.id}', 'service')">${t('delete')}</button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+            const darazList = document.getElementById('adminDarazList');
+            if (darazList) {
+                darazList.innerHTML = data.darazProducts.length === 0 ? 
+                    `<div class="empty-state"><p>${t('empty_daraz')}</p></div>` :
+                    data.darazProducts.map(d => `
+                        <div class="admin-item">
+                            ${d.image ? `<img src="${d.image}" alt="" onerror="this.style.display='none'">` : '<div style="width:50px;height:50px;border-radius:8px;background:#f0f0f5;display:flex;align-items:center;justify-content:center;font-size:20px;">🛒</div>'}
+                            <div class="admin-item-info"><div class="name">${getLocalizedName(d)}</div><div class="meta">Rs. ${(d.price||0).toLocaleString()} | Daraz</div></div>
+                            <div class="admin-item-actions">
+                                <button class="btn btn-outline btn-xs" onclick="editItem('${d.id}', 'daraz')">${t('edit')}</button>
+                                <button class="btn btn-outline btn-xs" style="color:#e74c3c;border-color:#e74c3c;" onclick="deleteItem('${d.id}', 'daraz')">${t('delete')}</button>
+                            </div>
+                        </div>
+                    `).join('');
+            }
+        }
+
+        function openAddModal(type) {
+            document.getElementById('modalTitle').textContent = t('add_item');
+            document.getElementById('modalEditId').value = '';
+            document.getElementById('modalType').value = type;
+            document.getElementById('modalName').value = '';
+            document.getElementById('modalDesc').value = '';
+            document.getElementById('modalPrice').value = '';
+            document.getElementById('modalLink').value = '';
+            document.getElementById('modalImage').value = '';
+            document.getElementById('modalVideo').value = '';
+            document.getElementById('modalNotes').value = '';
+            document.getElementById('addEditModal').classList.add('open');
+        }
+
+        function editItem(id, type) {
+            const data = getData();
+            let item = null;
+            if (type === 'product') item = data.products.find(p => p.id === id);
+            else if (type === 'service') item = data.services.find(s => s.id === id);
+            else if (type === 'daraz') item = data.darazProducts.find(d => d.id === id);
+            if (item) {
+                document.getElementById('modalTitle').textContent = t('edit');
+                document.getElementById('modalEditId').value = id;
+                document.getElementById('modalType').value = type;
+                document.getElementById('modalName').value = item.name || '';
+                document.getElementById('modalDesc').value = item.desc || '';
+                document.getElementById('modalPrice').value = item.price || '';
+                document.getElementById('modalLink').value = item.link || '';
+                document.getElementById('modalImage').value = item.image || '';
+                document.getElementById('modalVideo').value = item.video || '';
+                document.getElementById('modalNotes').value = item.notes || '';
+                document.getElementById('addEditModal').classList.add('open');
+            }
+        }
+
+        function closeModal() { document.getElementById('addEditModal').classList.remove('open'); }
+
+        function saveModalItem() {
+            const data = getData();
+            const id = document.getElementById('modalEditId').value;
+            const type = document.getElementById('modalType').value;
+            const name = document.getElementById('modalName').value.trim();
+            const desc = document.getElementById('modalDesc').value.trim();
+            const price = parseFloat(document.getElementById('modalPrice').value) || 0;
+            const link = document.getElementById('modalLink').value.trim();
+            const image = document.getElementById('modalImage').value.trim();
+            const video = document.getElementById('modalVideo').value.trim();
+            const notes = document.getElementById('modalNotes').value.trim();
+            if (!name) { showToast('Name is required', 'error'); return; }
+            const itemData = { name, name_en: name, name_ta: name, desc, desc_en: desc, desc_ta: desc, price, link, image, video, notes,
+                type: type === 'daraz' ? 'daraz' : (type === 'service' ? 'service' : 'own') };
+            if (id) {
+                if (type === 'product' || type === 'own') { const idx = data.products.findIndex(p => p.id === id); if (idx > -1) data.products[idx] = { ...data.products[idx], ...itemData }; }
+                else if (type === 'service') { const idx = data.services.findIndex(s => s.id === id); if (idx > -1) data.services[idx] = { ...data.services[idx], ...itemData }; }
+                else if (type === 'daraz') { const idx = data.darazProducts.findIndex(d => d.id === id); if (idx > -1) data.darazProducts[idx] = { ...data.darazProducts[idx], ...itemData }; }
+            } else {
+                const newItem = { ...itemData, id: Date.now().toString() + Math.random().toString(36).substr(2, 6), createdAt: Date.now() };
+                if (type === 'product' || type === 'own') data.products.push(newItem);
+                else if (type === 'service') data.services.push(newItem);
+                else if (type === 'daraz') data.darazProducts.push(newItem);
+            }
+            saveData(); closeModal(); showToast(t('save_success'), 'success'); renderAll();
+        }
+
+        function deleteItem(id, type) {
+            if (!confirm(t('confirm_delete'))) return;
+            const data = getData();
+            if (type === 'product') data.products = data.products.filter(p => p.id !== id);
+            else if (type === 'service') data.services = data.services.filter(s => s.id !== id);
+            else if (type === 'daraz') data.darazProducts = data.darazProducts.filter(d => d.id !== id);
+            saveData(); showToast(t('delete_success'), 'success'); renderAll();
+        }
+
+        function saveSettings() {
+            const data = getData();
+            data.settings.businessName = document.getElementById('settingsName').value || 'E-Mix';
+            data.settings.phone = document.getElementById('settingsPhone').value || '0715205901';
+            data.settings.whatsapp = document.getElementById('settingsWhatsapp').value || '94782482855';
+            data.settings.location = document.getElementById('settingsLocation').value || 'Anuradhapura, Sri Lanka';
+            data.settings.facebook = document.getElementById('settingsFacebook').value || '';
+            data.settings.adminEmail = document.getElementById('settingsAdminEmail').value || 'admin@emix.lk';
+            data.settings.adminPassword = document.getElementById('settingsAdminPassword').value || 'admin123';
+            saveData(); showToast(t('settings_saved'), 'success'); renderAll();
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
+        }
+
+        function populateSettingsForm() {
+            const data = getData();
+            const s = data.settings;
+            document.getElementById('settingsName').value = s.businessName || 'E-Mix';
+            document.getElementById('settingsPhone').value = s.phone || '0715205901';
+            document.getElementById('settingsWhatsapp').value = s.whatsapp || '94782482855';
+            document.getElementById('settingsLocation').value = s.location || 'Anuradhapura, Sri Lanka';
+            document.getElementById('settingsFacebook').value = s.facebook || '';
+            document.getElementById('settingsAdminEmail').value = s.adminEmail || 'admin@emix.lk';
+            document.getElementById('settingsAdminPassword').value = s.adminPassword || 'admin123';
+        }
+
+        // ===== INIT =====
+        function init() {
+            getData();
+            const savedLang = localStorage.getItem('emix_lang') || 'si';
+            switchLanguage(savedLang);
+            if (sessionStorage.getItem('emix_admin_logged_in') === 'true') isAdminLoggedIn = true;
+            setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 400);
+            // Initial hash routing
+            if (!window.location.hash) window.location.hash = '#/';
+            handleHashRouting();
+            populateSettingsForm();
+            document.getElementById('addEditModal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+        if (document.readyState === 'complete' || document.readyState === 'interactive') init();
     </script>
 </body>
 </html>
