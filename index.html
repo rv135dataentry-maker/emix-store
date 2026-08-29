@@ -52,27 +52,913 @@
         body[dir="ltr"] { font-family: var(--font-english); }
         body[dir="ltr"][data-lang="ta"] { font-family: var(--font-tamil); }
 
-        /* Preloader, Header, Nav, Bottom Nav, Hero, Cards, Admin, Modal, Toast, etc. */
-        /* සම්පූර්ණ මුල් කේතයේ ඇති සියලුම CSS මෙහි ඇතුළත් කර ඇත */
-        /* පහත දැක්වෙන්නේ ප්‍රධාන කොටස් පමණයි, ඉතිරිය පෙර පිළිතුරෙහි ඇත */
-        /* ... (පෙර CSS එලෙසම) ... */
+        /* ===== PRELOADER ===== */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        #preloader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .loader-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== HEADER / NAV ===== */
+        .site-header {
+            position: fixed;
+            top:0; left:0; right:0;
+            z-index:1000;
+            background: rgba(26,26,46,0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            height: var(--nav-height);
+            display: flex;
+            align-items: center;
+            transition: background var(--transition);
+        }
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap:12px;
+            width:100%;
+            max-width: var(--max-width);
+            margin:0 auto;
+            padding:0 16px;
+        }
+        .logo {
+            display:flex; align-items:center; gap:10px;
+            text-decoration:none; flex-shrink:0;
+        }
+        .logo-icon {
+            width:40px; height:40px;
+            background: linear-gradient(135deg, var(--accent), #ff6b6b);
+            border-radius:12px;
+            display:flex; align-items:center; justify-content:center;
+            font-weight:900; font-size:18px; color:#fff;
+            letter-spacing:-0.5px;
+            box-shadow:0 4px 12px rgba(233,69,96,0.4);
+        }
+        .logo-text {
+            font-size:20px; font-weight:800; color:#fff;
+            letter-spacing:-0.5px;
+        }
+        .logo-text span { color: var(--accent); }
+
+        .nav-links {
+            display:flex; align-items:center; gap:4px; flex-wrap:wrap;
+        }
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            text-decoration:none;
+            font-weight:600; font-size:13px;
+            padding:8px 14px; border-radius:20px;
+            transition: all var(--transition);
+            white-space:nowrap; cursor:pointer;
+            border:none; background:none; font-family:inherit;
+        }
+        .nav-link:hover, .nav-link.active {
+            color:#fff; background: rgba(255,255,255,0.12);
+        }
+        .nav-link.active { background: var(--accent); color:#fff; }
+
+        .lang-switcher {
+            display:flex; gap:2px;
+            background: rgba(255,255,255,0.08);
+            border-radius:20px; padding:3px; flex-shrink:0;
+        }
+        .lang-btn {
+            border:none; background:none;
+            color: rgba(255,255,255,0.7);
+            font-weight:700; font-size:11px;
+            padding:6px 10px; border-radius:16px;
+            cursor:pointer; transition: all var(--transition);
+            font-family:inherit; letter-spacing:0.3px;
+        }
+        .lang-btn:hover { color:#fff; }
+        .lang-btn.active {
+            background: var(--accent); color:#fff;
+            box-shadow:0 2px 8px rgba(233,69,96,0.35);
+        }
+
+        .hamburger {
+            display:none; flex-direction:column; gap:4px;
+            background:none; border:none; cursor:pointer;
+            padding:8px; border-radius:8px;
+        }
+        .hamburger span {
+            width:22px; height:2.5px; background:#fff;
+            border-radius:2px; transition: all var(--transition);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity:0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* ===== MOBILE BOTTOM NAV ===== */
+        .bottom-nav {
+            position: fixed;
+            bottom:0; left:0; right:0;
+            z-index:999;
+            background: rgba(26,26,46,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255,255,255,0.08);
+            display:none;
+            align-items:center;
+            justify-content:space-around;
+            padding:8px 4px calc(8px + var(--safe-bottom));
+        }
+        .bottom-nav-item {
+            display:flex; flex-direction:column; align-items:center; gap:2px;
+            text-decoration:none;
+            color: rgba(255,255,255,0.6);
+            font-size:10px; font-weight:600;
+            transition: color var(--transition);
+            cursor:pointer; border:none; background:none; font-family:inherit;
+            padding:4px 8px; border-radius:8px;
+        }
+        .bottom-nav-item svg { width:22px; height:22px; fill:currentColor; transition: transform var(--transition); }
+        .bottom-nav-item.active { color: var(--accent); }
+        .bottom-nav-item.active svg { transform: scale(1.1); }
+        .bottom-nav-item:hover { color:#fff; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            padding-top: var(--nav-height);
+            min-height: calc(100vh - var(--nav-height));
+            max-width: var(--max-width);
+            margin:0 auto;
+            padding-left:16px; padding-right:16px;
+        }
+
+        /* ===== PAGE SECTIONS ===== */
+        .page-section {
+            display:none;
+            padding:20px 0 40px;
+            animation: fadeInUp 0.4s ease;
+        }
+        .page-section.active { display:block; }
+        @keyframes fadeInUp {
+            from { opacity:0; transform: translateY(16px); }
+            to { opacity:1; transform: translateY(0); }
+        }
+
+        .section-title {
+            font-size:24px; font-weight:800;
+            margin-bottom:4px; color:var(--text);
+            letter-spacing:-0.5px;
+        }
+        .section-subtitle {
+            font-size:14px; color:var(--text-light);
+            margin-bottom:20px; font-weight:500;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #2d2d5e 50%, var(--primary-dark) 100%);
+            border-radius: var(--radius);
+            padding:32px 24px;
+            color:#fff;
+            margin-bottom:24px;
+            position:relative; overflow:hidden;
+            box-shadow: var(--shadow-lg);
+        }
+        .hero::before {
+            content:''; position:absolute; top:-50%; right:-30%;
+            width:300px; height:300px;
+            background: radial-gradient(circle, rgba(233,69,96,0.3) 0%, transparent 70%);
+            border-radius:50%;
+        }
+        .hero::after {
+            content:''; position:absolute; bottom:-40%; left:-20%;
+            width:250px; height:250px;
+            background: radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%);
+            border-radius:50%;
+        }
+        .hero-content { position:relative; z-index:1; }
+        .hero-badge {
+            display:inline-block;
+            background: rgba(255,255,255,0.12);
+            padding:6px 16px; border-radius:20px;
+            font-size:12px; font-weight:600;
+            margin-bottom:12px; letter-spacing:0.5px;
+        }
+        .hero h1 {
+            font-size: clamp(28px, 6vw, 42px);
+            font-weight:900; line-height:1.15;
+            margin-bottom:8px; letter-spacing:-1px;
+        }
+        .hero h1 .highlight { color: var(--accent); }
+        .hero p {
+            font-size:15px; color: rgba(255,255,255,0.75);
+            max-width:500px; margin-bottom:20px; font-weight:500;
+        }
+        .hero-actions { display:flex; gap:10px; flex-wrap:wrap; }
+        .btn {
+            display:inline-flex; align-items:center; gap:8px;
+            padding:12px 22px; border-radius:30px;
+            font-weight:700; font-size:14px;
+            text-decoration:none; cursor:pointer; border:none;
+            transition: all var(--transition);
+            font-family:inherit; letter-spacing:0.3px; white-space:nowrap;
+        }
+        .btn-primary {
+            background: var(--accent); color:#fff;
+            box-shadow:0 4px 16px rgba(233,69,96,0.4);
+        }
+        .btn-primary:hover { background: var(--accent-hover); transform: translateY(-2px); box-shadow:0 6px 24px rgba(233,69,96,0.5); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.1); color:#fff;
+            border:1px solid rgba(255,255,255,0.2);
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .btn-outline {
+            background: transparent; color: var(--accent);
+            border:2px solid var(--accent);
+        }
+        .btn-outline:hover { background: var(--accent); color:#fff; transform: translateY(-2px); }
+        .btn-sm { padding:8px 16px; font-size:12px; border-radius:24px; }
+        .btn-xs { padding:6px 12px; font-size:11px; border-radius:20px; font-weight:600; }
+
+        /* ===== CONTACT STRIP ===== */
+        .contact-strip {
+            display:flex; flex-wrap:wrap; gap:12px; margin-bottom:24px;
+        }
+        .contact-chip {
+            display:flex; align-items:center; gap:8px;
+            background: var(--bg-card);
+            padding:10px 16px; border-radius:30px;
+            box-shadow: var(--shadow);
+            text-decoration:none; color:var(--text);
+            font-size:13px; font-weight:600;
+            transition: all var(--transition);
+            border:1px solid var(--border);
+        }
+        .contact-chip:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+        .contact-chip svg { width:18px; height:18px; fill: var(--accent); flex-shrink:0; }
+        .contact-chip .chip-label { font-weight:500; color:var(--text-light); font-size:11px; }
+        .contact-chip .chip-value { font-weight:700; }
+
+        /* ===== CARDS GRID ===== */
+        .cards-grid {
+            display:grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap:16px;
+            margin-top:12px;
+        }
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow:hidden;
+            transition: all var(--transition);
+            border:1px solid var(--border);
+            display:flex; flex-direction:column;
+            position:relative;
+        }
+        .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--accent); }
+        .card-media {
+            position:relative;
+            width:100%;
+            aspect-ratio:4/3;
+            overflow:hidden;
+            background:#f0f0f5;
+            flex-shrink:0;
+            cursor:pointer;
+        }
+        .card-media img, .card-media video {
+            width:100%; height:100%;
+            object-fit:cover;
+            transition: transform 0.5s ease;
+        }
+        .card:hover .card-media img,
+        .card:hover .card-media video { transform: scale(1.05); }
+        .card-media .placeholder-img {
+            width:100%; height:100%;
+            display:flex; align-items:center; justify-content:center;
+            font-size:40px; color:#bbb;
+            background: linear-gradient(135deg, #e8e8ef, #d8d8e5);
+        }
+        .card-badge {
+            position:absolute; top:10px; left:10px;
+            background: var(--accent); color:#fff;
+            padding:4px 12px; border-radius:16px;
+            font-size:11px; font-weight:700; letter-spacing:0.5px;
+            z-index:2; box-shadow:0 2px 8px rgba(0,0,0,0.2);
+        }
+        .card-badge.daraz { background: #f57224; }
+        .card-badge.service { background: #4a6cf7; }
+        .card-body {
+            padding:14px 16px 16px;
+            flex:1;
+            display:flex; flex-direction:column; gap:6px;
+        }
+        .card-title {
+            font-size:16px; font-weight:700; line-height:1.3;
+            color:var(--text); cursor:pointer;
+        }
+        .card-title:hover { color: var(--accent); }
+        .card-desc {
+            font-size:13px; color:var(--text-light); line-height:1.5;
+            flex:1;
+            display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+        }
+        .card-price {
+            font-size:18px; font-weight:800;
+            color: var(--accent); letter-spacing:-0.5px;
+        }
+        .card-actions {
+            display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;
+        }
+        .card-actions .btn {
+            flex:1; justify-content:center;
+            padding:8px 10px; font-size:11px; border-radius:20px; min-width:0;
+        }
+        .btn-buy { background: var(--accent); color:#fff; }
+        .btn-buy:hover { background: var(--accent-hover); }
+        .btn-daraz { background: #f57224; color:#fff; }
+        .btn-daraz:hover { background: #e05e1a; }
+        .btn-share { background:#f0f0f5; color:var(--text); }
+        .btn-share:hover { background:#e0e0e8; }
+        .btn-link { background: var(--primary); color:#fff; }
+        .btn-link:hover { background: var(--primary-dark); }
+        .btn-whatsapp { background:#25d366; color:#fff; }
+        .btn-whatsapp:hover { background:#1ebe5b; }
+        .btn-facebook { background:#1877f2; color:#fff; }
+        .btn-facebook:hover { background:#0d6efd; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align:center; padding:40px 20px;
+            color: var(--text-light);
+        }
+        .empty-state .empty-icon { font-size:60px; margin-bottom:16px; opacity:0.5; }
+        .empty-state h3 { font-size:18px; font-weight:700; margin-bottom:8px; color:var(--text); }
+
+        /* ===== FILTER TABS ===== */
+        .filter-tabs {
+            display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px;
+        }
+        .filter-tab {
+            padding:8px 18px; border-radius:24px;
+            border:1px solid var(--border);
+            background: var(--bg-card);
+            cursor:pointer; font-weight:600; font-size:13px;
+            transition: all var(--transition);
+            font-family:inherit; color:var(--text-light); white-space:nowrap;
+        }
+        .filter-tab:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-tab.active {
+            background: var(--accent); color:#fff;
+            border-color: var(--accent);
+            box-shadow:0 4px 12px rgba(233,69,96,0.3);
+        }
+
+        /* ===== ADMIN ===== */
+        .admin-login-form {
+            max-width:400px; margin:40px auto;
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding:30px 24px;
+            box-shadow: var(--shadow-lg);
+            border:1px solid var(--border);
+        }
+        .admin-login-form h2 { font-size:22px; font-weight:800; margin-bottom:4px; text-align:center; }
+        .admin-login-form .subtitle { text-align:center; font-size:13px; color:var(--text-light); margin-bottom:20px; }
+        .form-group { margin-bottom:16px; }
+        .form-group label { display:block; font-size:13px; font-weight:600; margin-bottom:6px; color:var(--text); }
+        .form-group input, .form-group textarea, .form-group select {
+            width:100%; padding:12px 16px;
+            border-radius: var(--radius-sm);
+            border:1.5px solid var(--border);
+            font-size:14px; font-family:inherit;
+            transition: border-color var(--transition);
+            background: var(--bg); color:var(--text); outline:none;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: var(--accent);
+            box-shadow:0 0 0 3px rgba(233,69,96,0.1);
+        }
+        .form-group textarea { min-height:80px; resize:vertical; }
+        .form-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+
+        .admin-dashboard { display:none; padding:20px 0; }
+        .admin-dashboard.active { display:block; animation: fadeInUp 0.3s ease; }
+        .admin-header {
+            display:flex; align-items:center; justify-content:space-between;
+            flex-wrap:wrap; gap:12px; margin-bottom:20px;
+        }
+        .admin-header h2 { font-size:22px; font-weight:800; }
+        .admin-tabs {
+            display:flex; gap:4px; flex-wrap:wrap; margin-bottom:20px;
+            background: var(--bg-card); padding:4px;
+            border-radius:12px; box-shadow: var(--shadow);
+            border:1px solid var(--border);
+        }
+        .admin-tab {
+            padding:10px 16px; border-radius:8px;
+            border:none; background:none; cursor:pointer;
+            font-weight:600; font-size:13px;
+            transition: all var(--transition);
+            font-family:inherit; color:var(--text-light);
+            flex:1; text-align:center; white-space:nowrap;
+        }
+        .admin-tab:hover { color: var(--accent); background: rgba(233,69,96,0.06); }
+        .admin-tab.active {
+            background: var(--accent); color:#fff;
+            box-shadow:0 4px 10px rgba(233,69,96,0.3);
+        }
+        .admin-panel { display:none; }
+        .admin-panel.active { display:block; animation: fadeInUp 0.3s ease; }
+
+        .admin-item-list {
+            display:flex; flex-direction:column; gap:8px;
+            margin-bottom:16px; max-height:400px; overflow-y:auto;
+        }
+        .admin-item {
+            display:flex; align-items:center; gap:12px;
+            background: var(--bg-card);
+            padding:10px 14px; border-radius: var(--radius-sm);
+            border:1px solid var(--border);
+            transition: all var(--transition);
+            flex-wrap:wrap;
+        }
+        .admin-item:hover { border-color: var(--accent); }
+        .admin-item img {
+            width:50px; height:50px; border-radius:8px;
+            object-fit:cover; flex-shrink:0; background:#f0f0f5;
+        }
+        .admin-item-info { flex:1; min-width:120px; }
+        .admin-item-info .name { font-weight:700; font-size:14px; }
+        .admin-item-info .meta { font-size:12px; color:var(--text-light); }
+        .admin-item-actions { display:flex; gap:6px; }
+        .admin-item-actions .btn { padding:6px 10px; font-size:11px; border-radius:16px; }
+
+        .settings-form {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding:20px;
+            box-shadow: var(--shadow);
+            border:1px solid var(--border);
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position:fixed; top:80px; right:16px;
+            z-index:99999; display:flex; flex-direction:column; gap:8px;
+        }
+        .toast {
+            padding:14px 20px; border-radius: var(--radius-sm);
+            color:#fff; font-weight:600; font-size:13px;
+            box-shadow: var(--shadow-lg);
+            animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+            max-width:350px;
+        }
+        .toast.success { background:#2ecc71; }
+        .toast.error { background:#e74c3c; }
+        .toast.info { background:#3498db; }
+        @keyframes slideInRight { from { transform: translateX(100%); opacity:0; } to { transform: translateX(0); opacity:1; } }
+        @keyframes fadeOut { to { opacity:0; transform: translateX(50px); } }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position:fixed; inset:0;
+            background: rgba(0,0,0,0.6);
+            z-index:10000;
+            display:none; align-items:center; justify-content:center;
+            padding:20px; backdrop-filter: blur(4px);
+        }
+        .modal-overlay.open { display:flex; }
+        .modal-content {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding:24px;
+            max-width:500px; width:100%;
+            max-height:85vh; overflow-y:auto;
+            box-shadow: var(--shadow-lg);
+            border:1px solid var(--border);
+            animation: fadeInUp 0.3s ease;
+        }
+        .modal-content h3 { font-size:18px; font-weight:800; margin-bottom:16px; text-align:center; }
+        .modal-close {
+            float:right; background:none; border:none;
+            font-size:22px; cursor:pointer; color:var(--text-light);
+            transition: color var(--transition); font-family:inherit; line-height:1; padding:4px;
+        }
+        .modal-close:hover { color: var(--accent); }
+
+        .whatsapp-float {
+            position:fixed; bottom:100px; right:20px; z-index:998;
+            background:#25d366; border-radius:50%;
+            width:56px; height:56px;
+            display:flex; align-items:center; justify-content:center;
+            box-shadow:0 4px 20px rgba(37,211,102,0.5);
+            transition: transform var(--transition);
+            text-decoration:none;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        .whatsapp-float svg { width:30px; height:30px; fill:#fff; }
+        @media (min-width:769px) { .whatsapp-float { bottom:30px; right:30px; } }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width:768px) {
+            .nav-links {
+                display:none; position:absolute; top:var(--nav-height); left:0; right:0;
+                background: var(--primary); flex-direction:column;
+                padding:12px 16px;
+                border-bottom:1px solid rgba(255,255,255,0.08);
+                box-shadow:0 10px 30px rgba(0,0,0,0.3); gap:2px;
+            }
+            .nav-links.open { display:flex; }
+            .nav-link { width:100%; text-align:center; padding:12px; font-size:14px; }
+            .hamburger { display:flex; }
+            .bottom-nav { display:flex; }
+            .main-content { padding-left:12px; padding-right:12px; }
+            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(250px,1fr)); gap:12px; }
+            .hero { padding:24px 18px; border-radius:14px; }
+            .section-title { font-size:20px; }
+            .form-row { grid-template-columns:1fr; }
+            .admin-header { flex-direction:column; align-items:flex-start; }
+            .admin-tabs { flex-wrap:nowrap; overflow-x:auto; -webkit-overflow-scrolling:touch; }
+            .admin-tab { flex:none; padding:10px 14px; font-size:12px; }
+            .lang-switcher { margin-left:auto; }
+            .logo-text { font-size:17px; }
+            .logo-icon { width:34px; height:34px; font-size:15px; border-radius:10px; }
+        }
+        @media (max-width:480px) {
+            .cards-grid { grid-template-columns:1fr; }
+            .card-actions .btn { font-size:10px; padding:7px 6px; }
+            .hero h1 { font-size:26px; }
+            .contact-strip { gap:8px; }
+            .contact-chip { padding:8px 12px; font-size:12px; }
+            .btn { padding:10px 16px; font-size:13px; }
+        }
+        @media (min-width:769px) and (max-width:1024px) {
+            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); }
+        }
+        @media (min-width:1025px) {
+            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:20px; }
+        }
+        @media print {
+            .site-header, .bottom-nav, .whatsapp-float, .toast-container { display:none !important; }
+            .main-content { padding-top:0; }
+            body { padding-bottom:0; }
+        }
     </style>
 </head>
 <body data-lang="si" dir="ltr">
-    <!-- PRELOADER, HEADER, NAV, BOTTOM NAV, MAIN CONTENT -->
-    <!-- ... (පෙර HTML ව්‍යුහය එලෙසම) ... -->
+
+    <!-- PRELOADER -->
+    <div id="preloader"><div class="loader-ring"></div></div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- HEADER -->
+    <header class="site-header">
+        <div class="container">
+            <a href="#" class="logo" onclick="navigateTo('home')" aria-label="E-Mix Home">
+                <div class="logo-icon">E</div>
+                <span class="logo-text">E-<span>Mix</span></span>
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <button class="nav-link active" data-page="home" onclick="navigateTo('home')">🏠 <span data-i18n="nav_home">මුල් පිටුව</span></button>
+                <button class="nav-link" data-page="products" onclick="navigateTo('products')">📦 <span data-i18n="nav_products">භාණ්ඩ</span></button>
+                <button class="nav-link" data-page="services" onclick="navigateTo('services')">🛠️ <span data-i18n="nav_services">සේවා</span></button>
+            </nav>
+            <div class="lang-switcher">
+                <button class="lang-btn active" data-lang="si" onclick="switchLanguage('si')">සිං</button>
+                <button class="lang-btn" data-lang="en" onclick="switchLanguage('en')">EN</button>
+                <button class="lang-btn" data-lang="ta" onclick="switchLanguage('ta')">த</button>
+            </div>
+            <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- BOTTOM NAV (Mobile) -->
+    <nav class="bottom-nav" id="bottomNav">
+        <button class="bottom-nav-item active" data-page="home" onclick="navigateTo('home')">
+            <svg viewBox="0 0 24 24"><path d="M12 3l9 9h-3v8h-5v-6h-2v6H6v-8H3l9-9z"/></svg>
+            <span data-i18n="nav_home">මුල් පිටුව</span>
+        </button>
+        <button class="bottom-nav-item" data-page="products" onclick="navigateTo('products')">
+            <svg viewBox="0 0 24 24"><path d="M20 7h-4V5a2 2 0 00-2-2H10a2 2 0 00-2 2v2H4a2 2 0 00-2 2v11a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zm-10-2h4v2h-4V5zm10 16H4V9h16v12z"/></svg>
+            <span data-i18n="nav_products">භාණ්ඩ</span>
+        </button>
+        <button class="bottom-nav-item" data-page="services" onclick="navigateTo('services')">
+            <svg viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09A6.02 6.02 0 007.5 3 5.5 5.5 0 002 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.31C18.6 15.36 22 12.28 22 8.5A5.5 5.5 0 0016.5 3z"/></svg>
+            <span data-i18n="nav_services">සේවා</span>
+        </button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="mainContent">
+
+        <!-- HOME PAGE -->
+        <section class="page-section active" id="page-home">
+            <div class="hero">
+                <div class="hero-content">
+                    <span class="hero-badge" data-i18n="hero_badge">ශ්‍රී ලංකාවේ විශ්වාසනීය වෙළඳසැල</span>
+                    <h1 data-i18n="hero_title">E-Mix <span class="highlight">භාණ්ඩ</span> හා <span class="highlight">සේවා</span></h1>
+                    <p data-i18n="hero_desc">අනුරාධපුරයේ සිට ලොවටම - ගුණාත්මක භාණ්ඩ හා සේවා එකම තැනකින්.</p>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="navigateTo('products')">🛒 <span data-i18n="shop_now">දැන්ම මිලදී ගන්න</span></button>
+                        <button class="btn btn-secondary" onclick="navigateTo('services')">🔧 <span data-i18n="our_services">අපගේ සේවා</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-strip">
+                <a href="tel:0715205901" class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <div><div class="chip-label" data-i18n="phone">දුරකථන</div><div class="chip-value">071 520 5901</div></div>
+                </a>
+                <a href="https://wa.me/94782482855" target="_blank" class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.41-1.49-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.22 5.11 4.51.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.84 9.84 0 01-1.51-5.25c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 016.99 2.9 9.82 9.82 0 012.9 6.99c0 5.45-4.44 9.88-9.89 9.88zm8.41-18.29A11.8 11.8 0 0012.05 0C5.5 0 .16 5.33.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.9 11.9 0 005.68 1.44h.01c6.55 0 11.88-5.33 11.88-11.89 0-3.18-1.24-6.16-3.48-8.4z"/></svg>
+                    <div><div class="chip-label">WhatsApp</div><div class="chip-value">+94 78 248 2855</div></div>
+                </a>
+                <a href="https://web.facebook.com/people/E-Mix/61553416852131/" target="_blank" class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    <div><div class="chip-label">Facebook</div><div class="chip-value">E-Mix</div></div>
+                </a>
+                <span class="contact-chip">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>
+                    <div><div class="chip-label" data-i18n="location">ස්ථානය</div><div class="chip-value">Anuradhapura, Sri Lanka</div></div>
+                </span>
+            </div>
+
+            <h2 class="section-title" data-i18n="featured_products">🔥 විශේෂාංග භාණ්ඩ</h2>
+            <p class="section-subtitle" data-i18n="featured_products_sub">අපගේ ජනප්‍රියම භාණ්ඩ කිහිපයක්</p>
+            <div class="cards-grid" id="homeFeaturedProducts"></div>
+
+            <h2 class="section-title" style="margin-top:24px;" data-i18n="featured_services">🛠️ විශේෂාංග සේවා</h2>
+            <p class="section-subtitle" data-i18n="featured_services_sub">ඔබගේ අවශ්‍යතා සඳහා වෘත්තීය සේවා</p>
+            <div class="cards-grid" id="homeFeaturedServices"></div>
+        </section>
+
+        <!-- PRODUCTS PAGE -->
+        <section class="page-section" id="page-products">
+            <h2 class="section-title" data-i18n="all_products">📦 සියලුම භාණ්ඩ</h2>
+            <p class="section-subtitle" data-i18n="all_products_sub">සියලුම භාණ්ඩ බලන්න - Daraz Affiliate භාණ්ඩද ඇතුළත්ව</p>
+            <div class="filter-tabs" id="productFilters">
+                <button class="filter-tab active" data-filter="all" onclick="filterProducts('all')" data-i18n="filter_all">සියල්ල</button>
+                <button class="filter-tab" data-filter="own" onclick="filterProducts('own')" data-i18n="filter_own">E-Mix භාණ්ඩ</button>
+                <button class="filter-tab" data-filter="daraz" onclick="filterProducts('daraz')" data-i18n="filter_daraz">Daraz Affiliate</button>
+            </div>
+            <div class="cards-grid" id="allProducts"></div>
+        </section>
+
+        <!-- SERVICES PAGE -->
+        <section class="page-section" id="page-services">
+            <h2 class="section-title" data-i18n="all_services">🛠️ සියලුම සේවා</h2>
+            <p class="section-subtitle" data-i18n="all_services_sub">වෙබ් නිර්මාණය, මෘදුකාංග හා තවත්</p>
+            <div class="cards-grid" id="allServices"></div>
+        </section>
+
+        <!-- ADMIN PAGE (Hidden from public nav, accessible via #/admin/login) -->
+        <section class="page-section" id="page-admin">
+            <div class="admin-login-form" id="adminLoginForm">
+                <h2>🔐 <span data-i18n="admin_login">පරිපාලන පිවිසුම</span></h2>
+                <p class="subtitle" data-i18n="admin_login_sub">ඔබගේ විද්‍යුත් ලිපිනය හා මුරපදය ඇතුළත් කරන්න</p>
+                <div class="form-group">
+                    <label data-i18n="email">විද්‍යුත් ලිපිනය (Email)</label>
+                    <input type="email" id="adminEmail" placeholder="admin@emix.lk" autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="password">මුරපදය (Password)</label>
+                    <input type="password" id="adminPassword" placeholder="••••••••" autocomplete="current-password">
+                </div>
+                <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;" onclick="adminLogin()" data-i18n="login_btn">පිවිසෙන්න</button>
+                <p style="text-align:center;font-size:11px;color:var(--text-light);margin-top:12px;" data-i18n="admin_hint">Default: admin@emix.lk / admin123</p>
+            </div>
+            <div class="admin-dashboard" id="adminDashboard">
+                <div class="admin-header">
+                    <h2>⚙️ <span data-i18n="admin_dashboard">පරිපාලන පාලක පැනලය</span></h2>
+                    <button class="btn btn-outline btn-sm" onclick="adminLogout()" data-i18n="logout">ඉවත් වන්න</button>
+                </div>
+                <div class="admin-tabs" id="adminTabs">
+                    <button class="admin-tab active" data-tab="tab-products" onclick="switchAdminTab('tab-products')">📦 <span data-i18n="manage_products">භාණ්ඩ</span></button>
+                    <button class="admin-tab" data-tab="tab-services" onclick="switchAdminTab('tab-services')">🛠️ <span data-i18n="manage_services">සේවා</span></button>
+                    <button class="admin-tab" data-tab="tab-daraz" onclick="switchAdminTab('tab-daraz')">🛒 <span data-i18n="manage_daraz">Daraz</span></button>
+                    <button class="admin-tab" data-tab="tab-settings" onclick="switchAdminTab('tab-settings')">⚙️ <span data-i18n="settings">සැකසුම්</span></button>
+                </div>
+                <div class="admin-panel active" id="tab-products">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <h3 style="font-size:16px;font-weight:700;" data-i18n="product_list">භාණ්ඩ ලැයිස්තුව</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openAddModal('product')">+ <span data-i18n="add_product">භාණ්ඩයක් එක් කරන්න</span></button>
+                    </div>
+                    <div class="admin-item-list" id="adminProductList"></div>
+                </div>
+                <div class="admin-panel" id="tab-services">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <h3 style="font-size:16px;font-weight:700;" data-i18n="service_list">සේවා ලැයිස්තුව</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openAddModal('service')">+ <span data-i18n="add_service">සේවාවක් එක් කරන්න</span></button>
+                    </div>
+                    <div class="admin-item-list" id="adminServiceList"></div>
+                </div>
+                <div class="admin-panel" id="tab-daraz">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+                        <h3 style="font-size:16px;font-weight:700;" data-i18n="daraz_list">Daraz Affiliate භාණ්ඩ</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openAddModal('daraz')">+ <span data-i18n="add_daraz">Daraz භාණ්ඩයක් එක් කරන්න</span></button>
+                    </div>
+                    <div class="admin-item-list" id="adminDarazList"></div>
+                </div>
+                <div class="admin-panel" id="tab-settings">
+                    <div class="settings-form">
+                        <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;" data-i18n="business_settings">ව්‍යාපාර සැකසුම්</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label data-i18n="business_name">ව්‍යාපාර නම</label>
+                                <input type="text" id="settingsName" value="E-Mix">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="business_phone">දුරකථන අංකය</label>
+                                <input type="text" id="settingsPhone" value="0715205901">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>WhatsApp</label>
+                                <input type="text" id="settingsWhatsapp" value="94782482855">
+                            </div>
+                            <div class="form-group">
+                                <label data-i18n="business_location">ස්ථානය</label>
+                                <input type="text" id="settingsLocation" value="Anuradhapura, Sri Lanka">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Facebook URL</label>
+                            <input type="url" id="settingsFacebook" value="https://web.facebook.com/people/E-Mix/61553416852131/">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="admin_email_setting">පරිපාලන විද්‍යුත් ලිපිනය</label>
+                            <input type="email" id="settingsAdminEmail" value="admin@emix.lk">
+                        </div>
+                        <div class="form-group">
+                            <label data-i18n="admin_password_setting">පරිපාලන මුරපදය</label>
+                            <input type="password" id="settingsAdminPassword" value="admin123">
+                        </div>
+                        <button class="btn btn-primary" onclick="saveSettings()" data-i18n="save_settings">සැකසුම් සුරකින්න</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- WHATSAPP FLOAT -->
+    <a href="https://wa.me/94782482855" target="_blank" class="whatsapp-float" aria-label="WhatsApp">
+        <svg viewBox="0 0 24 24"><path d="M17.47 14.38c-.3-.15-1.77-.87-2.04-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.17-.17.2-.35.22-.65.07-.3-.15-1.27-.47-2.41-1.49-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.14-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.07-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.89 1.22 3.09.15.2 2.11 3.22 5.11 4.51.71.31 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.77-.72 2.02-1.42.25-.7.25-1.3.17-1.42-.07-.12-.27-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 01-5.03-1.38l-.36-.21-3.73.98 1-3.64-.24-.37a9.84 9.84 0 01-1.51-5.25c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 016.99 2.9 9.82 9.82 0 012.9 6.99c0 5.45-4.44 9.88-9.89 9.88zm8.41-18.29A11.8 11.8 0 0012.05 0C5.5 0 .16 5.33.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.31-1.65a11.9 11.9 0 005.68 1.44h.01c6.55 0 11.88-5.33 11.88-11.89 0-3.18-1.24-6.16-3.48-8.4z"/></svg>
+    </a>
+
+    <!-- ADD/EDIT MODAL -->
+    <div class="modal-overlay" id="addEditModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <h3 id="modalTitle" data-i18n="add_item">නව අයිතමයක් එක් කරන්න</h3>
+            <input type="hidden" id="modalEditId">
+            <input type="hidden" id="modalType">
+            <div class="form-group">
+                <label data-i18n="item_name">නම / මාතෘකාව</label>
+                <input type="text" id="modalName" placeholder="භාණ්ඩයේ නම">
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_desc">විස්තරය</label>
+                <textarea id="modalDesc" placeholder="කෙටි විස්තරයක්..."></textarea>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label data-i18n="item_price">මිල (Rs.)</label>
+                    <input type="number" id="modalPrice" placeholder="2500" min="0" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label data-i18n="item_link">බාහිර සබැඳිය (URL)</label>
+                    <input type="url" id="modalLink" placeholder="https://...">
+                </div>
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_image">පින්තූර URL</label>
+                <input type="url" id="modalImage" placeholder="https://example.com/image.jpg හෝ Google Drive link">
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_video">වීඩියෝ URL (විකල්ප)</label>
+                <input type="url" id="modalVideo" placeholder="https://example.com/video.mp4 හෝ Google Drive link">
+            </div>
+            <div class="form-group">
+                <label data-i18n="item_notes">වෙනත් සටහන් (විකල්ප)</label>
+                <textarea id="modalNotes" placeholder="අමතර තොරතුරු..." style="min-height:60px;"></textarea>
+            </div>
+            <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveModalItem()" data-i18n="save_item">සුරකින්න</button>
+        </div>
+    </div>
 
     <script>
         // ===== SUPABASE CONFIGURATION =====
-        const SUPABASE_URL = 'https://kocfubjwdmsqmvwaivel.supabase.co'; // TODO: ඔබේ URL එක දමන්න
-        const SUPABASE_ANON_KEY = 'sb_publishable__Zpta1I4dpVp6UgyXU80yg_rpfM7gql'; // TODO: ඔබේ anon key එක දමන්න
-        const USE_SUPABASE = true; // Supabase භාවිතා කිරීමට true කරන්න
-
-        // Supabase client එක initialize කරන්න
+        const SUPABASE_URL = 'https://kocfubjwdmsqmvwaivel.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable__Zpta1I4dpVp6UgyXU80yg_rpfM7gql';
+        const USE_SUPABASE = true;
         const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         // ===== TRANSLATIONS =====
-        const translations = { /* ... (පෙර අනුවාදයේ ඇති පරිදි) ... */ };
+        const translations = {
+            si: {
+                nav_home: 'මුල් පිටුව', nav_products: 'භාණ්ඩ', nav_services: 'සේවා',
+                nav_admin: 'පරිපාලනය', hero_badge: 'ශ්‍රී ලංකාවේ විශ්වාසනීය වෙළඳසැල',
+                hero_title: 'E-Mix', hero_desc: 'අනුරාධපුරයේ සිට ලොවටම - ගුණාත්මක භාණ්ඩ හා සේවා එකම තැනකින්.',
+                shop_now: 'දැන්ම මිලදී ගන්න', our_services: 'අපගේ සේවා', phone: 'දුරකථන',
+                location: 'ස්ථානය', featured_products: '🔥 විශේෂාංග භාණ්ඩ', featured_products_sub: 'අපගේ ජනප්‍රියම භාණ්ඩ කිහිපයක්',
+                featured_services: '🛠️ විශේෂාංග සේවා', featured_services_sub: 'ඔබගේ අවශ්‍යතා සඳහා වෘත්තීය සේවා',
+                all_products: '📦 සියලුම භාණ්ඩ', all_products_sub: 'සියලුම භාණ්ඩ බලන්න - Daraz Affiliate භාණ්ඩද ඇතුළත්ව',
+                all_services: '🛠️ සියලුම සේවා', all_services_sub: 'වෙබ් නිර්මාණය, මෘදුකාංග හා තවත්',
+                filter_all: 'සියල්ල', filter_own: 'E-Mix භාණ්ඩ', filter_daraz: 'Daraz Affiliate',
+                admin_login: 'පරිපාලන පිවිසුම', admin_login_sub: 'ඔබගේ විද්‍යුත් ලිපිනය හා මුරපදය ඇතුළත් කරන්න',
+                email: 'විද්‍යුත් ලිපිනය (Email)', password: 'මුරපදය (Password)', login_btn: 'පිවිසෙන්න',
+                admin_hint: 'Default: admin@emix.lk / admin123', admin_dashboard: 'පරිපාලන පාලක පැනලය',
+                logout: 'ඉවත් වන්න', manage_products: 'භාණ්ඩ', manage_services: 'සේවා', manage_daraz: 'Daraz',
+                settings: 'සැකසුම්', product_list: 'භාණ්ඩ ලැයිස්තුව', service_list: 'සේවා ලැයිස්තුව',
+                daraz_list: 'Daraz Affiliate භාණ්ඩ', add_product: 'භාණ්ඩයක් එක් කරන්න', add_service: 'සේවාවක් එක් කරන්න',
+                add_daraz: 'Daraz භාණ්ඩයක් එක් කරන්න', business_settings: 'ව්‍යාපාර සැකසුම්',
+                business_name: 'ව්‍යාපාර නම', business_phone: 'දුරකථන අංකය', business_location: 'ස්ථානය',
+                admin_email_setting: 'පරිපාලන විද්‍යුත් ලිපිනය', admin_password_setting: 'පරිපාලන මුරපදය',
+                save_settings: 'සැකසුම් සුරකින්න', add_item: 'නව අයිතමයක් එක් කරන්න', item_name: 'නම / මාතෘකාව',
+                item_desc: 'විස්තරය', item_price: 'මිල (Rs.)', item_link: 'බාහිර සබැඳිය (URL)', item_image: 'පින්තූර URL',
+                item_video: 'වීඩියෝ URL (විකල්ප)', item_notes: 'වෙනත් සටහන් (විකල්ප)', save_item: 'සුරකින්න',
+                buy_now: 'මිලදී ගන්න', share: 'බෙදාගන්න', view_link: 'සබැඳිය', whatsapp_share: 'WhatsApp',
+                facebook_share: 'Facebook', empty_products: 'තවමත් භාණ්ඩ නොමැත', empty_services: 'තවමත් සේවා නොමැත',
+                empty_daraz: 'තවමත් Daraz භාණ්ඩ නොමැත', confirm_delete: 'මෙය මකා දැමීමට ඔබට විශ්වාසද?',
+                edit: 'සංස්කරණය', delete: 'මකන්න', save_success: 'සාර්ථකව සුරැකිණි!', login_success: 'පිවිසුම සාර්ථකයි!',
+                login_error: 'පිවිසුම අසාර්ථකයි. නිවැරදි තොරතුරු ඇතුළත් කරන්න.', logout_success: 'ඔබ ඉවත් වී ඇත.',
+                settings_saved: 'සැකසුම් සුරකින ලදී!', delete_success: 'මකා දමන ලදී!', share_text: 'E-Mix වෙතින් මෙය බලන්න!',
+                shop_online: 'Online භාණ්ඩ හා සේවා', call_now: 'අමතන්න', daraz_go: 'Daraz වෙත යන්න'
+            },
+            en: {
+                nav_home: 'Home', nav_products: 'Products', nav_services: 'Services', nav_admin: 'Admin',
+                hero_badge: 'Trusted Sri Lankan Store', hero_title: 'E-Mix', hero_desc: 'From Anuradhapura to the world - quality products & services in one place.',
+                shop_now: 'Shop Now', our_services: 'Our Services', phone: 'Phone', location: 'Location',
+                featured_products: '🔥 Featured Products', featured_products_sub: 'Some of our most popular items',
+                featured_services: '🛠️ Featured Services', featured_services_sub: 'Professional services for your needs',
+                all_products: '📦 All Products', all_products_sub: 'Browse all products - including Daraz Affiliate items',
+                all_services: '🛠️ All Services', all_services_sub: 'Web design, software & more', filter_all: 'All',
+                filter_own: 'E-Mix Products', filter_daraz: 'Daraz Affiliate', admin_login: 'Admin Login',
+                admin_login_sub: 'Enter your email and password', email: 'Email Address', password: 'Password',
+                login_btn: 'Login', admin_hint: 'Default: admin@emix.lk / admin123', admin_dashboard: 'Admin Dashboard',
+                logout: 'Logout', manage_products: 'Products', manage_services: 'Services', manage_daraz: 'Daraz',
+                settings: 'Settings', product_list: 'Product List', service_list: 'Service List', daraz_list: 'Daraz Affiliate Products',
+                add_product: 'Add Product', add_service: 'Add Service', add_daraz: 'Add Daraz Product',
+                business_settings: 'Business Settings', business_name: 'Business Name', business_phone: 'Phone Number',
+                business_location: 'Location', admin_email_setting: 'Admin Email', admin_password_setting: 'Admin Password',
+                save_settings: 'Save Settings', add_item: 'Add New Item', item_name: 'Name / Title', item_desc: 'Description',
+                item_price: 'Price (Rs.)', item_link: 'External Link (URL)', item_image: 'Image URL', item_video: 'Video URL (optional)',
+                item_notes: 'Other Notes (optional)', save_item: 'Save', buy_now: 'Buy Now', share: 'Share', view_link: 'Link',
+                whatsapp_share: 'WhatsApp', facebook_share: 'Facebook', empty_products: 'No products yet', empty_services: 'No services yet',
+                empty_daraz: 'No Daraz products yet', confirm_delete: 'Are you sure you want to delete this?', edit: 'Edit',
+                delete: 'Delete', save_success: 'Saved successfully!', login_success: 'Login successful!', login_error: 'Login failed.',
+                logout_success: 'Logged out.', settings_saved: 'Settings saved!', delete_success: 'Deleted successfully!',
+                share_text: 'Check this out from E-Mix!', shop_online: 'Online Products & Services', call_now: 'Call',
+                daraz_go: 'Go to Daraz'
+            },
+            ta: {
+                nav_home: 'முகப்பு', nav_products: 'பொருட்கள்', nav_services: 'சேவைகள்', nav_admin: 'நிர்வாகம்',
+                hero_badge: 'நம்பகமான இலங்கை கடை', hero_title: 'E-Mix', hero_desc: 'அநுராதபுரத்திலிருந்து உலகிற்கு - தரமான பொருட்கள் & சேவைகள் ஒரே இடத்தில்.',
+                shop_now: 'இப்போது வாங்க', our_services: 'எங்கள் சேவைகள்', phone: 'தொலைபேசி', location: 'இடம்',
+                featured_products: '🔥 சிறப்பு பொருட்கள்', featured_products_sub: 'எங்கள் பிரபலமான சில பொருட்கள்',
+                featured_services: '🛠️ சிறப்பு சேவைகள்', featured_services_sub: 'உங்கள் தேவைகளுக்கான தொழில்முறை சேவைகள்',
+                all_products: '📦 அனைத்து பொருட்கள்', all_products_sub: 'அனைத்து பொருட்களையும் பார்க்கவும் - Daraz இணைப்பு பொருட்கள் உட்பட',
+                all_services: '🛠️ அனைத்து சேவைகள்', all_services_sub: 'வலை வடிவமைப்பு, மென்பொருள் & மேலும்', filter_all: 'அனைத்தும்',
+                filter_own: 'E-Mix பொருட்கள்', filter_daraz: 'Daraz இணைப்பு', admin_login: 'நிர்வாக உள்நுழைவு',
+                admin_login_sub: 'உங்கள் மின்னஞ்சல் மற்றும் கடவுச்சொல்லை உள்ளிடவும்', email: 'மின்னஞ்சல் முகவரி',
+                password: 'கடவுச்சொல்', login_btn: 'உள்நுழைய', admin_hint: 'இயல்புநிலை: admin@emix.lk / admin123',
+                admin_dashboard: 'நிர்வாக டாஷ்போர்டு', logout: 'வெளியேறு', manage_products: 'பொருட்கள்',
+                manage_services: 'சேவைகள்', manage_daraz: 'Daraz', settings: 'அமைப்புகள்', product_list: 'பொருட்கள் பட்டியல்',
+                service_list: 'சேவைகள் பட்டியல்', daraz_list: 'Daraz இணைப்பு பொருட்கள்', add_product: 'பொருள் சேர்க்க',
+                add_service: 'சேவை சேர்க்க', add_daraz: 'Daraz பொருள் சேர்க்க', business_settings: 'வணிக அமைப்புகள்',
+                business_name: 'வணிக பெயர்', business_phone: 'தொலைபேசி எண்', business_location: 'இடம்',
+                admin_email_setting: 'நிர்வாக மின்னஞ்சல்', admin_password_setting: 'நிர்வாக கடவுச்சொல்',
+                save_settings: 'அமைப்புகளை சேமிக்க', add_item: 'புதிய உருப்படியை சேர்க்க', item_name: 'பெயர் / தலைப்பு',
+                item_desc: 'விளக்கம்', item_price: 'விலை (Rs.)', item_link: 'வெளி இணைப்பு (URL)', item_image: 'பட URL',
+                item_video: 'வீடியோ URL (விருப்பம்)', item_notes: 'பிற குறிப்புகள் (விருப்பம்)', save_item: 'சேமிக்க',
+                buy_now: 'வாங்க', share: 'பகிர்', view_link: 'இணைப்பு', whatsapp_share: 'WhatsApp', facebook_share: 'Facebook',
+                empty_products: 'இன்னும் பொருட்கள் இல்லை', empty_services: 'இன்னும் சேவைகள் இல்லை', empty_daraz: 'இன்னும் Daraz பொருட்கள் இல்லை',
+                confirm_delete: 'இதை நீக்க விரும்புகிறீர்களா?', edit: 'திருத்து', delete: 'நீக்கு', save_success: 'வெற்றிகரமாக சேமிக்கப்பட்டது!',
+                login_success: 'உள்நுழைவு வெற்றி!', login_error: 'உள்நுழைவு தோல்வி.', logout_success: 'நீங்கள் வெளியேறிவிட்டீர்கள்.',
+                settings_saved: 'அமைப்புகள் சேமிக்கப்பட்டன!', delete_success: 'வெற்றிகரமாக நீக்கப்பட்டது!',
+                share_text: 'E-Mix இலிருந்து இதைப் பாருங்கள்!', shop_online: 'ஆன்லைன் பொருட்கள் & சேவைகள்',
+                call_now: 'அழைக்க', daraz_go: 'Daraz க்கு செல்ல'
+            }
+        };
 
         // ===== STATE =====
         let currentPage = 'home';
@@ -102,7 +988,6 @@
         async function getData() {
             if (USE_SUPABASE) {
                 try {
-                    // Fetch all tables in parallel
                     const [productsRes, servicesRes, darazRes, settingsRes] = await Promise.all([
                         supabase.from('products').select('*'),
                         supabase.from('services').select('*'),
@@ -111,13 +996,10 @@
                     ]);
 
                     if (productsRes.error || servicesRes.error || darazRes.error || settingsRes.error) {
-                        console.error('Supabase fetch error:',
-                            productsRes.error || servicesRes.error || darazRes.error || settingsRes.error);
-                        // Fallback to local storage or default
+                        console.error('Supabase fetch error:', productsRes.error || servicesRes.error || darazRes.error || settingsRes.error);
                         return getLocalData();
                     }
 
-                    // Map settings columns to camelCase
                     const settingsData = settingsRes.data ? {
                         businessName: settingsRes.data.business_name,
                         phone: settingsRes.data.phone,
@@ -168,7 +1050,6 @@
         async function saveData() {
             if (USE_SUPABASE && appData) {
                 try {
-                    // Upsert products
                     for (const item of appData.products) {
                         const { error } = await supabase.from('products').upsert({
                             id: item.id,
@@ -188,7 +1069,6 @@
                         });
                         if (error) console.error('Supabase upsert product error:', error);
                     }
-                    // Upsert services
                     for (const item of appData.services) {
                         const { error } = await supabase.from('services').upsert({
                             id: item.id,
@@ -208,7 +1088,6 @@
                         });
                         if (error) console.error('Supabase upsert service error:', error);
                     }
-                    // Upsert daraz products
                     for (const item of appData.darazProducts) {
                         const { error } = await supabase.from('daraz_products').upsert({
                             id: item.id,
@@ -228,7 +1107,6 @@
                         });
                         if (error) console.error('Supabase upsert daraz error:', error);
                     }
-                    // Upsert settings
                     const { error: settingsError } = await supabase.from('settings').upsert({
                         id: 'main',
                         business_name: appData.settings.businessName,
@@ -243,7 +1121,6 @@
                 } catch (err) {
                     console.error('Supabase save error:', err);
                 }
-                // Also save to localStorage as backup
                 saveDataToLocal();
             } else {
                 saveDataToLocal();
@@ -251,12 +1128,9 @@
         }
 
         function saveDataToLocal() {
-            if (appData) {
-                localStorage.setItem('emix_data', JSON.stringify(appData));
-            }
+            if (appData) localStorage.setItem('emix_data', JSON.stringify(appData));
         }
 
-        // ===== DELETE ITEM FROM SUPABASE =====
         async function deleteItemFromSupabase(table, id) {
             if (!USE_SUPABASE) return;
             try {
@@ -271,9 +1145,7 @@
         function switchLanguage(lang) {
             currentLanguage = lang;
             document.body.setAttribute('data-lang', lang);
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
             localStorage.setItem('emix_lang', lang);
             applyTranslations();
             renderAll();
@@ -457,9 +1329,7 @@
 
         function filterProducts(filter) {
             currentProductFilter = filter;
-            document.querySelectorAll('#productFilters .filter-tab').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.filter === filter);
-            });
+            document.querySelectorAll('#productFilters .filter-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.filter === filter));
             renderProducts(appData);
         }
 
@@ -724,7 +1594,7 @@
 
         // ===== INIT =====
         async function init() {
-            await getData(); // Supabase/LocalStorage වලින් දත්ත ලබා ගන්න
+            await getData();
             const savedLang = localStorage.getItem('emix_lang') || 'si';
             switchLanguage(savedLang);
             if (sessionStorage.getItem('emix_admin_logged_in') === 'true') isAdminLoggedIn = true;
