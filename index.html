@@ -36,16 +36,16 @@
             --nav-height: 70px;
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        html { scroll-behavior:smooth; -webkit-tap-highlight-color:transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
         body {
             font-family: var(--font-sinhala);
             background: var(--bg);
             color: var(--text);
-            line-height:1.6;
-            min-height:100vh;
-            overflow-x:hidden;
-            padding-bottom:calc(80px + var(--safe-bottom));
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-bottom: calc(80px + var(--safe-bottom));
             transition: background var(--transition), color var(--transition);
         }
         body[dir="ltr"] { font-family: var(--font-english); }
@@ -426,8 +426,16 @@
                 <div class="form-group"><label data-i18n="item_price">මිල (Rs.)</label><input type="number" id="modalPrice" placeholder="2500" min="0" step="0.01"></div>
                 <div class="form-group"><label data-i18n="item_link">බාහිර සබැඳිය (URL)</label><input type="url" id="modalLink" placeholder="https://..."></div>
             </div>
-            <div class="form-group"><label data-i18n="item_image">පින්තූර URL</label><input type="url" id="modalImage" placeholder="https://drive.google.com/uc?export=view&id=..."></div>
-            <div class="form-group"><label data-i18n="item_video">වීඩියෝ URL (විකල්ප)</label><input type="url" id="modalVideo" placeholder="https://drive.google.com/file/d/.../preview"></div>
+            <div class="form-group">
+                <label>පින්තූරය උඩුගත කරන්න</label>
+                <input type="file" id="modalImageFile" accept="image/*" onchange="handleImageUpload(event)">
+                <input type="url" id="modalImage" placeholder="URL එක ස්වයංක්‍රීයව පිරේ" readonly>
+            </div>
+            <div class="form-group">
+                <label>වීඩියෝව උඩුගත කරන්න (විකල්ප)</label>
+                <input type="file" id="modalVideoFile" accept="video/*" onchange="handleVideoUpload(event)">
+                <input type="url" id="modalVideo" placeholder="URL එක ස්වයංක්‍රීයව පිරේ" readonly>
+            </div>
             <div class="form-group"><label data-i18n="item_notes">වෙනත් සටහන් (විකල්ප)</label><textarea id="modalNotes" placeholder="අමතර තොරතුරු..." style="min-height:60px;"></textarea></div>
             <button class="btn btn-primary" style="width:100%;justify-content:center;" onclick="saveModalItem()" data-i18n="save_item">සුරකින්න</button>
         </div>
@@ -439,7 +447,7 @@
         const SUPABASE_ANON_KEY = 'sb_publishable__Zpta1I4dpVp6UgyXU80yg_rpfM7gql';               // TODO: පුරවන්න
         const USE_SUPABASE = true; // true කරන්න, credentials පිරවූ පසු
 
-        let supabaseClient = null; // 'supabase' variable name එක වෙනස් කළා
+        let supabaseClient = null;
         if (USE_SUPABASE && !SUPABASE_URL.includes('YOUR-PROJECT')) {
             supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
@@ -655,6 +663,57 @@
             try { await supabaseClient.from(table).delete().eq('id', id); } catch (err) { console.error('Delete error:', err); }
         }
 
+        // Supabase Storage upload
+        async function uploadFileToSupabase(file) {
+            if (!USE_SUPABASE || !supabaseClient) {
+                showToast('Supabase සම්බන්ධ නොවී ඇත', 'error');
+                return null;
+            }
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${fileExt}`;
+            try {
+                const { data, error } = await supabaseClient.storage
+                    .from('emix-media')
+                    .upload(fileName, file, {
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+                if (error) {
+                    console.error('Upload error:', error);
+                    showToast('Upload failed: ' + error.message, 'error');
+                    return null;
+                }
+                const { data: publicUrlData } = supabaseClient.storage
+                    .from('emix-media')
+                    .getPublicUrl(fileName);
+                return publicUrlData.publicUrl;
+            } catch (err) {
+                console.error('Upload exception:', err);
+                showToast('Upload error: ' + err.message, 'error');
+                return null;
+            }
+        }
+
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const url = await uploadFileToSupabase(file);
+            if (url) {
+                document.getElementById('modalImage').value = url;
+                showToast('පින්තූරය උඩුගත කළා!', 'success');
+            }
+        }
+
+        async function handleVideoUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const url = await uploadFileToSupabase(file);
+            if (url) {
+                document.getElementById('modalVideo').value = url;
+                showToast('වීඩියෝව උඩුගත කළා!', 'success');
+            }
+        }
+
         // Language
         function switchLanguage(lang) {
             currentLanguage = lang;
@@ -778,6 +837,7 @@
             const cardClickHandler = isDaraz ? `onclick="openDarazLink('${link}')"` : '';
             const buyButton = isDaraz ? `<button class="btn btn-daraz btn-xs" onclick="openDarazLink('${link}')">🛒 ${t('daraz_go')}</button>` : `<button class="btn btn-buy btn-xs" onclick="buyItem('${item.id}', '${type}')">🛒 ${t('buy_now')}</button>`;
             const linkButton = (link && link !== '#') ? `<button class="btn btn-link btn-xs" onclick="openLink('${link}')">🔗 ${t('view_link')}</button>` : '';
+            const whatsappButton = isDaraz ? `<button class="btn btn-daraz btn-xs" onclick="openDarazLink('${link}')">💬 ${t('whatsapp_share')}</button>` : `<button class="btn btn-whatsapp btn-xs" onclick="shareToWhatsApp('${item.id}', '${type}')">💬 ${t('whatsapp_share')}</button>`;
             return `
             <div class="card" data-id="${item.id}" data-type="${type}" ${cardClickHandler}>
                 <div class="card-media" ${isDaraz ? `onclick="openDarazLink('${link}')"` : ''}>
@@ -794,7 +854,7 @@
                         ${linkButton}
                     </div>
                     <div class="card-actions" style="margin-top:4px;">
-                        <button class="btn btn-whatsapp btn-xs" onclick="shareToWhatsApp('${item.id}', '${type}')">💬 ${t('whatsapp_share')}</button>
+                        ${whatsappButton}
                         <button class="btn btn-facebook btn-xs" onclick="shareToFacebook('${item.id}', '${type}')">📘 ${t('facebook_share')}</button>
                     </div>
                 </div>
@@ -842,7 +902,21 @@
             }
         }
         function shareToWhatsApp(id, type) { shareItem(id, type, 'whatsapp'); }
-        function shareToFacebook(id, type) { shareItem(id, type, 'facebook'); }
+        function shareToFacebook(id, type) {
+            const data = getData();
+            let item = null;
+            if (type === 'product' || type === 'own') item = data.products.find(p => p.id === id);
+            else if (type === 'daraz') item = data.darazProducts.find(p => p.id === id);
+            else if (type === 'service') item = data.services.find(s => s.id === id);
+            if (item) {
+                const name = getLocalizedName(item);
+                const desc = getLocalizedDesc(item);
+                const price = item.price || 0;
+                const quote = encodeURIComponent(`${name} - Rs. ${price}\n${desc}\nE-Mix | Anuradhapura, Sri Lanka`);
+                const url = encodeURIComponent(window.location.href);
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${quote}`, '_blank');
+            }
+        }
         function openLink(url) { if (url && url !== '#') window.open(url, '_blank'); }
 
         // Admin
@@ -932,6 +1006,8 @@
             document.getElementById('modalImage').value = '';
             document.getElementById('modalVideo').value = '';
             document.getElementById('modalNotes').value = '';
+            document.getElementById('modalImageFile').value = '';
+            document.getElementById('modalVideoFile').value = '';
             document.getElementById('addEditModal').classList.add('open');
         }
         function editItem(id, type) {
@@ -951,6 +1027,8 @@
                 document.getElementById('modalImage').value = item.image || '';
                 document.getElementById('modalVideo').value = item.video || '';
                 document.getElementById('modalNotes').value = item.notes || '';
+                document.getElementById('modalImageFile').value = '';
+                document.getElementById('modalVideoFile').value = '';
                 document.getElementById('addEditModal').classList.add('open');
             }
         }
